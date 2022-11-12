@@ -102,9 +102,11 @@ public abstract class PresidentGameEngine {
      */
     protected boolean playRound(Queue<String> players, String firstPlayerInRound, String secondPlayerInRound, Queue<Card> roundDeck) {
 
-        /*Mettre while si fin de tour ou deux consécutifs ne peuvent pas jouer
+        /*Mettre while si fin de tour ou deux joueurs consécutifs ne peuvent pas jouer
         dans la boucle : si Queue.length = 3 ET Joueur.passeSonTour() => joueur passe en fin de Queue
         dans la boucle : si Queue.length = 2 ET Joueur.passeSonTour() => joueur remove from Queue*/
+        /*Ajouter variable consecutiveNoPlays = 0 on incrémente dès que quelqu'un passe son tour
+        Si consecutiveNoPlays > 1 on dit que le gagnant est le prochain joueur */
         //here, we try to get the first player card
         Card firstPlayerCard = getCardOrGameOver(roundDeck, firstPlayerInRound, secondPlayerInRound);
         //getCardOrGameOver nécessite implémentation de "passer le tour"

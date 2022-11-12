@@ -56,7 +56,11 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     @Override
     protected Card getCardOrGameOver(Collection<Card> leftOverCard, String cardProviderPlayer, String cardProviderPlayerOpponent) {
-
+        /*Méthode à changer :
+        À partir de la main, on doit poser aucune ou plusieurs cartes de même valeur
+        * Elle prend comme paramètre la main
+          Elle return la main + cartes à jouer + variable passerLeTour ou passerLePli
+        */
         if (!this.playerCards.containsKey(cardProviderPlayer) || this.playerCards.get(cardProviderPlayer).isEmpty()) {
             this.playerCards.get(cardProviderPlayerOpponent).addAll(leftOverCard);
             this.playerCards.remove(cardProviderPlayer);

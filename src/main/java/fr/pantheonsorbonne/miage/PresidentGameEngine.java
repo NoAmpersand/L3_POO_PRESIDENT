@@ -102,6 +102,9 @@ public abstract class PresidentGameEngine {
      */
     protected boolean playRound(Queue<String> players, String firstPlayerInRound, String secondPlayerInRound, Queue<Card> roundDeck) {
 
+        //winnerTemp = HashMap<Joueur, DernièresCartesJouées>
+        //DernièresCartesJouées est une ArrayList<Cards>
+
         /*Mettre while si fin de tour ou deux joueurs consécutifs ne peuvent pas jouer
         dans la boucle : si Queue.length = 3 ET Joueur.passeSonTour() => joueur passe en fin de Queue
         dans la boucle : si Queue.length = 2 ET Joueur.passeSonTour() => joueur remove from Queue*/
@@ -114,12 +117,6 @@ public abstract class PresidentGameEngine {
             players.remove(firstPlayerInRound);
             return true;
         }
-        //here we also get the second player card
-        Card secondPlayerCard = getCardOrGameOver(roundDeck, secondPlayerInRound, firstPlayerInRound);
-        if (secondPlayerCard == null) {
-            players.remove(secondPlayerInRound);
-            return true;
-        }
 
 
         //put the two cards on the roundDeck
@@ -128,10 +125,9 @@ public abstract class PresidentGameEngine {
         //Else : prend 1er element, calcule arrayList[0].length = m
         //On fait tableau de taille m
         roundDeck.offer(firstPlayerCard);
-        roundDeck.offer(secondPlayerCard);
 
         //compute who is the winner
-        String winner = getWinner(firstPlayerInRound, secondPlayerInRound, firstPlayerCard, secondPlayerCard);
+        //String winner = getWinner(firstPlayerInRound, secondPlayerInRound, firstPlayerCard, secondPlayerCard); => remplacée par winnerTemp
         //if there's a winner, we distribute the card to him
         if (winner != null) {
             giveCardsToPlayer(roundDeck, winner);
@@ -168,6 +164,7 @@ public abstract class PresidentGameEngine {
      * @return the name of the winner or null if it's a tie
      */
     protected static String getWinner(String contestantA, String contestantB, Card contestantACard, Card contestantBCard) {
+        //À changer avec les règles président
         if (contestantACard.getValue().getRank() > contestantBCard.getValue().getRank()) {
             return contestantA;
         } else if (contestantACard.getValue().getRank() < contestantBCard.getValue().getRank()) {

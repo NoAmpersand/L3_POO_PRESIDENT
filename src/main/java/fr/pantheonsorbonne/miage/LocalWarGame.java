@@ -25,6 +25,8 @@ public class LocalWarGame extends WarGameEngine {
         LocalWarGame localWarGame = new LocalWarGame(Set.of("Joueur1", "Joueur2", "Joueur3"));
         localWarGame.play();
 
+
+
     }
 
     @Override

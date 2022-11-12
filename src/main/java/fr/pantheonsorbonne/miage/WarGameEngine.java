@@ -37,6 +37,8 @@ public abstract class WarGameEngine {
             //these are the cards played by the players on this round
             Queue<Card> roundDeck = new LinkedList<>();
 
+            //Si playerIsFinished() == true remove from Queue
+
             //take the first player form the queue
             String firstPlayerInRound = players.poll();
             //and put it immediately at the end
@@ -46,6 +48,10 @@ public abstract class WarGameEngine {
             String secondPlayerInRound = players.poll();
             //and put it back immediately also
             players.offer(secondPlayerInRound);
+
+
+            String thirdPlayerInRound = players.poll();
+            players.offer(thirdPlayerInRound);
 
             //loop until there is a winner for this round
             while (true) {
@@ -90,9 +96,12 @@ public abstract class WarGameEngine {
      */
     protected boolean playRound(Queue<String> players, String firstPlayerInRound, String secondPlayerInRound, Queue<Card> roundDeck) {
 
-
+        /*Mettre while si fin de tour ou deux consécutifs ne peuvent pas jouer
+        dans la boucle : si Queue.length = 3 ET Joueur.passeSonTour() => joueur passe en fin de Queue
+        dans la boucle : si Queue.length = 2 ET Joueur.passeSonTour() => joueur remove from Queue*/
         //here, we try to get the first player card
         Card firstPlayerCard = getCardOrGameOver(roundDeck, firstPlayerInRound, secondPlayerInRound);
+        //getCardOrGameOver nécessite implémentation de "passer le tour"
         if (firstPlayerCard == null) {
             players.remove(firstPlayerInRound);
             return true;
@@ -104,7 +113,12 @@ public abstract class WarGameEngine {
             return true;
         }
 
+
         //put the two cards on the roundDeck
+        //On offer des tableaux de Card
+        //Si queue vide on offer tableaux de taille n (n = pairs|tri|carré)
+        //Else : prend 1er element, calcule arrayList[0].length = m
+        //On fait tableau de taille m
         roundDeck.offer(firstPlayerCard);
         roundDeck.offer(secondPlayerCard);
 

@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * This class implements the war game with the network engine
  */
-public class WarGameNetworkEngine extends WarGameEngine {
+public class WarGameNetworkEngine extends PresidentGameEngine {
     private static final int PLAYER_COUNT = 3;
 
     private final HostFacade hostFacade;
@@ -37,7 +37,7 @@ public class WarGameNetworkEngine extends WarGameEngine {
         //wait for enough players to join
         hostFacade.waitForExtraPlayerCount(PLAYER_COUNT);
 
-        WarGameEngine host = new WarGameNetworkEngine(hostFacade, war.getPlayers(), war);
+        PresidentGameEngine host = new WarGameNetworkEngine(hostFacade, war.getPlayers(), war);
         host.play();
 
 

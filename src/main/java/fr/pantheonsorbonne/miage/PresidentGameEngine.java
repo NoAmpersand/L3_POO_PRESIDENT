@@ -12,48 +12,51 @@ import java.util.Set;
 /**
  * this class is a abstract version of the engine, to be used locally on through the network
  */
-public abstract class WarGameEngine {
+public abstract class PresidentGameEngine {
 
-    public static final int CARDS_IN_HAND_INITIAL_COUNT = 3;
+    public static final int CARDS_IN_HAND_INITIAL_COUNT = 18;
 
     /**
      * play a war game wit the provided players
      */
     public void play() {
-        //send the initial hand to every players
+        //On initialise la main pour chaque joueur
         for (String playerName : getInitialPlayers()) {
-            //get random cards
+            //On prend des cartes aléatoires
             Card[] cards = Deck.getRandomCards(CARDS_IN_HAND_INITIAL_COUNT);
-            // transform them to String
+            //On les change en String
             String hand = Card.cardsToString(cards);
-            //send them to this players
+            //On les donne au joueur
             giveCardsToPlayer(playerName, hand);
         }
-        // make a queue with all the players
-        final Queue<String> players = new LinkedList<>();
-        players.addAll(this.getInitialPlayers());
-        //repeat until only 1 player is left
+        // Initialiser une queue avec tous les joueurs
+        final Queue<String> players = new LinkedList<>(this.getInitialPlayers());
+        //Boucle while il reste + d'un joueur
         while (players.size() > 1) {
             //these are the cards played by the players on this round
+            //Les cartes joués dans un pli
             Queue<Card> roundDeck = new LinkedList<>();
 
             //Si playerIsFinished() == true remove from Queue
+            //Méthode à ajouter : playerIsFinished()
 
-            //take the first player form the queue
+
+            //On ajoute le i-ième player dans la queue
             String firstPlayerInRound = players.poll();
-            //and put it immediately at the end
+            //On le met directement dans la fin de la queue
             players.offer(firstPlayerInRound);
 
-            //take the second player from the queue
+            //On ajoute le i-ième player dans la queue
             String secondPlayerInRound = players.poll();
-            //and put it back immediately also
+            //On le met directement dans la fin de la queue
             players.offer(secondPlayerInRound);
 
-
+            //On ajoute le i-ième player dans la queue
             String thirdPlayerInRound = players.poll();
+            //On le met directement dans la fin de la queue
             players.offer(thirdPlayerInRound);
 
-            //loop until there is a winner for this round
+            //On loop jusqu'à ce qu'il y ait un gagnant
             while (true) {
 
 
@@ -62,6 +65,9 @@ public abstract class WarGameEngine {
 
 
         }
+
+
+        //Penser à stocker les perdants dans un HashMap<Joueur, Role>
         //since we've left the loop, we have only 1 player left: the winner
         String winner = players.poll();
         //send him the gameover and leave

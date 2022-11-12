@@ -9,20 +9,20 @@ import java.util.stream.Collectors;
 /**
  * this class implements the war game locally
  */
-public class LocalWarGame extends WarGameEngine {
+public class LocalPresidentGame extends PresidentGameEngine {
 
     private final Set<String> initialPlayers;
-    private final Map<String, Queue<Card>> playerCards = new HashMap<>();
+    private final Map<String, ArrayList<Card>> playerCards = new HashMap<>();
 
-    public LocalWarGame(Set<String> initialPlayers) {
+    public LocalPresidentGame(Set<String> initialPlayers) {
         this.initialPlayers = initialPlayers;
         for (String player : initialPlayers) {
-            playerCards.put(player, new LinkedList<>());
+            playerCards.put(player, new ArrayList<>());
         }
     }
 
     public static void main(String... args) {
-        LocalWarGame localWarGame = new LocalWarGame(Set.of("Joueur1", "Joueur2", "Joueur3"));
+        LocalPresidentGame localWarGame = new LocalPresidentGame(Set.of("Joueur1", "Joueur2", "Joueur3"));
         localWarGame.play();
 
 
@@ -62,7 +62,7 @@ public class LocalWarGame extends WarGameEngine {
             this.playerCards.remove(cardProviderPlayer);
             return null;
         } else {
-            return this.playerCards.get(cardProviderPlayer).poll();
+            return this.playerCards.get(cardProviderPlayer).remove(0);
         }
     }
 
@@ -79,7 +79,7 @@ public class LocalWarGame extends WarGameEngine {
         if (this.playerCards.get(player).isEmpty()) {
             throw new NoMoreCardException();
         } else {
-            return this.playerCards.get(player).poll();
+            return this.playerCards.get(player).remove(0);
         }
     }
 }

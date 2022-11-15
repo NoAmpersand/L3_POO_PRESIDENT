@@ -4,10 +4,7 @@ import fr.pantheonsorbonne.miage.exception.NoMoreCardException;
 import fr.pantheonsorbonne.miage.game.Card;
 import fr.pantheonsorbonne.miage.game.Deck;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 /**
  * this class is a abstract version of the engine, to be used locally on through the network
@@ -104,6 +101,8 @@ public abstract class PresidentGameEngine {
 
         //winnerTemp = HashMap<Joueur, DernièresCartesJouées>
         //DernièresCartesJouées est une ArrayList<Cards>
+
+        Map winnerTemp = new HashMap<String, ArrayList<Card>>();
 
         /*Mettre while si fin de tour ou deux joueurs consécutifs ne peuvent pas jouer
         dans la boucle : si Queue.length = 3 ET Joueur.passeSonTour() => joueur passe en fin de Queue

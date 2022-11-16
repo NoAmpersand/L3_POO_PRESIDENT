@@ -102,7 +102,7 @@ public abstract class PresidentGameEngine {
         //winnerTemp = HashMap<Joueur, DernièresCartesJouées>
         //DernièresCartesJouées est une ArrayList<Cards>
 
-        Map winnerTemp = new HashMap<String, ArrayList<Card>>();
+        Map winnerTemp = new TreeMap<String, ArrayList<Card>>();
         boolean endTurn1, endTurn2, endTurn3 = false;
         boolean allEndTurn = false; //is true si tout endTurn-n = true
         int turnPassCount = 0;
@@ -129,6 +129,7 @@ public abstract class PresidentGameEngine {
         Si consecutiveNoPlays > 1 on dit que le gagnant est le prochain joueur */
         //here, we try to get the first player card
         Card firstPlayerCard = getCardOrGameOver(roundDeck, firstPlayerInRound, secondPlayerInRound);
+
         //getCardOrGameOver nécessite implémentation de "passer le tour"
         if (firstPlayerCard == null) {
             players.remove(firstPlayerInRound);

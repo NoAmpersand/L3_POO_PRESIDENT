@@ -56,13 +56,34 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     @Override
     //Cette méthode prends les cartes du dernier gagnant et les cartes du joueur et le joueur renvoie une ou plusieurs cartes adéquates
-    protected ArrayList<Card> getCardOrGameOver(HashMap<String, ArrayList<Card>> winnerTemp, String namePlayer) {
+    protected ArrayList<Card> getCardOrGameOver(TreeMap<String, ArrayList<Card>> winnerTemp, String namePlayer) {
         /*Méthode à changer :
         À partir de la main, on doit poser aucune ou plusieurs cartes de même valeur
         * Elle prend comme paramètre la main
           Elle return la main + cartes à jouer + variable passerLeTour ou passerLePli
         */
-        this.playerCards.get(namePlayer);
+        ArrayList<Card> hand = this.playerCards.get(namePlayer);
+        ArrayList<Card> winnerHand = winnerTemp.firstEntry().getValue();
+        Map<Integer, Integer> mapHand = new HashMap<>();
+        for(Card card : hand){
+            if(mapHand.containsKey(card.valueToInt())){
+                int valueToIncrement = mapHand.get(card.valueToInt());
+                valueToIncrement++;
+                mapHand.put(mapHand.get(card.valueToInt()), valueToIncrement);
+            }else{
+                mapHand.put(mapHand.get(card.valueToInt()), 1);
+            }
+        }
+        Map<Integer, Integer> playableCards = new HashMap<>();
+        for(int cardValue : mapHand.keySet()){
+            if(winnerHand.get(0).valueToInt() <= cardValue){
+
+            }
+            if (winnerHand.size() <= mapHand.get(cardValue)){
+                playableCards.put(cardValue, mapHand.get(cardValue));
+            }
+        }
+
 
         if (!this.playerCards.containsKey(cardProviderPlayer) || this.playerCards.get(cardProviderPlayer).isEmpty()) {
             this.playerCards.get(cardProviderPlayerOpponent).addAll(leftOverCard);

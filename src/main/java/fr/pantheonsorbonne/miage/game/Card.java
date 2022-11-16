@@ -64,6 +64,10 @@ public class Card {
         return this.getValue().getStringRepresentation() + this.getColor().getStringRepresentation();
     }
 
+    public int valueToInt(){
+        return this.getValue().getRank();
+    }
+
     public String toFancyString() {
         int rank = this.getValue().ordinal();
         if (rank > 10) {

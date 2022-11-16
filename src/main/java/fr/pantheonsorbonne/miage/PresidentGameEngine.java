@@ -6,6 +6,8 @@ import fr.pantheonsorbonne.miage.game.Deck;
 
 import java.util.*;
 
+import javax.naming.NameParser;
+
 /**
  * this class is a abstract version of the engine, to be used locally on through the network
  */
@@ -102,12 +104,14 @@ public abstract class PresidentGameEngine {
         //winnerTemp = HashMap<Joueur, DernièresCartesJouées>
         //DernièresCartesJouées est une ArrayList<Cards>
 
-        Map winnerTemp = new TreeMap<String, ArrayList<Card>>();
+        TreeMap<String, ArrayList<Card>>  winnerTemp = new TreeMap<>();
         boolean endTurn1, endTurn2, endTurn3 = false;
         boolean allEndTurn = false; //is true si tout endTurn-n = true
         int turnPassCount = 0;
         while (allEndTurn = false) {
-            ArrayList<Card> playerCards = getCardOrGameOver(roundDeck, firstPlayerInRound, secondPlayerInRound);
+
+            String namePlayer = players.poll();
+            ArrayList<Card> playerCards = getCardOrGameOver( winnerTemp, namePlayer);
             if (playerCards.isEmpty()) {
                 for()
                 players.remove(firstPlayerInRound);
@@ -170,7 +174,7 @@ public abstract class PresidentGameEngine {
      * @param cardProviderPlayerOpponent the Opponent of this player
      * @return a card of null if player cardProviderPlayer is gameover
      */
-    protected abstract Card getCardOrGameOver(HashMap<String, ArrayList<Card>> , String cardProviderPlayer, String cardProviderPlayerOpponent);
+    protected abstract ArrayList<Card> getCardOrGameOver(TreeMap<String, ArrayList<Card>> winnerTemp, String namePlayer);
 
     /**
      * give the winner of a round

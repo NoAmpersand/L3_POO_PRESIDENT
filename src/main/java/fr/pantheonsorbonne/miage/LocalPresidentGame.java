@@ -25,8 +25,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
         LocalPresidentGame localWarGame = new LocalPresidentGame(Set.of("Joueur1", "Joueur2", "Joueur3", "Joueur4"));
         localWarGame.play();
 
-
-
     }
 
     @Override
@@ -43,7 +41,14 @@ public class LocalPresidentGame extends PresidentGameEngine {
     @Override
     protected boolean playRound(Queue<String> players, String playerA, String playerB, Queue<Card> roundDeck) {
         System.out.println("New round:");
-        System.out.println(this.playerCards.keySet().stream().filter(p -> !this.playerCards.get(p).isEmpty()).map(p -> p + " has " + this.playerCards.get(p).stream().map(c -> c.toFancyString()).collect(Collectors.joining(" "))).collect(Collectors.joining("\n")));
+        System.out
+                .println(
+                        this.playerCards
+                                .keySet().stream().filter(p -> !this.playerCards.get(p).isEmpty()).map(
+                                        p -> p + " has "
+                                                + this.playerCards.get(p).stream().map(c -> c.toFancyString())
+                                                        .collect(Collectors.joining(" ")))
+                                .collect(Collectors.joining("\n")));
         System.out.println();
         return super.playRound(players, playerA, playerB, roundDeck);
 
@@ -55,44 +60,76 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    //Cette méthode prends les cartes du dernier gagnant et les cartes du joueur et le joueur renvoie une ou plusieurs cartes adéquates
+    // Cette méthode prends les cartes du dernier gagnant et les cartes du joueur et
+    // le joueur renvoie une ou plusieurs cartes adéquates
     protected ArrayList<Card> getCardOrGameOver(TreeMap<String, ArrayList<Card>> winnerTemp, String namePlayer) {
-        /*Méthode à changer :
-        À partir de la main, on doit poser aucune ou plusieurs cartes de même valeur
-        * Elle prend comme paramètre la main
-          Elle return la main + cartes à jouer + variable passerLeTour ou passerLePli
-        */
+        /*
+         * Méthode à changer :
+         * À partir de la main, on doit poser aucune ou plusieurs cartes de même valeur
+         * Elle prend comme paramètre la main
+         * Elle return la main + cartes à jouer + variable passerLeTour ou passerLePli
+         */
         ArrayList<Card> hand = this.playerCards.get(namePlayer);
         ArrayList<Card> winnerHand = winnerTemp.firstEntry().getValue();
         Map<Integer, Integer> mapHand = new HashMap<>();
-        for(Card card : hand){
-            if(mapHand.containsKey(card.valueToInt())){
+        for (Card card : hand) {
+            if (mapHand.containsKey(card.valueToInt())) {
                 int valueToIncrement = mapHand.get(card.valueToInt());
                 valueToIncrement++;
                 mapHand.put(mapHand.get(card.valueToInt()), valueToIncrement);
-            }else{
+            } else {
                 mapHand.put(mapHand.get(card.valueToInt()), 1);
             }
         }
         Map<Integer, Integer> playableCards = new HashMap<>();
-        for(int cardValue : mapHand.keySet()){
-            if(winnerHand.get(0).valueToInt() <= cardValue) {
+        for (int cardValue : mapHand.keySet()) {
+            if (winnerHand.get(0).valueToInt() <= cardValue) {
                 if (winnerHand.size() <= mapHand.get(cardValue)) {
                     playableCards.put(cardValue, mapHand.get(cardValue));
                 }
             }
         }
         // appelle methode systemeExpert qui renvoie les cartes à jouer
+        // map<valeur carte qui sera jouer, nbcarte de cette valeur qui sera jouer
+        TreeMap<Integer, Integer> mapPlay = new TreeMap<>();
+        // valeur par default
+        mapPlay.put(2, 2);
 
-
-
-        if (!this.playerCards.containsKey(cardProviderPlayer) || this.playerCards.get(cardProviderPlayer).isEmpty()) {
-            this.playerCards.get(cardProviderPlayerOpponent).addAll(leftOverCard);
-            this.playerCards.remove(cardProviderPlayer);
-            return null;
-        } else {
-            return this.playerCards.get(cardProviderPlayer).remove(0);
+        ArrayList<Card> cardPlay = new ArrayList<>();
+        int nbDeleteCard = 0;
+        int index = 0;
+        for (Card card : hand) {
+            if (nbDeleteCard >= mapPlay.firstEntry().getValue()) {
+                break;
+            }
+            if (mapHand.get(card.valueToInt()) == mapPlay.firstEntry().getValue()) {
+                Card oneCard = hand.get(index);
+                cardPlay.add(oneCard);
+                nbDeleteCard += 1;
+            }
+            index += 1;
         }
+        for (Card card : hand) {
+            if (nbDeleteCard >= mapPlay.firstEntry().getValue()) {
+                break;
+            }
+            if (mapHand.get(card.valueToInt()) == mapPlay.firstEntry().getValue()) {
+                hand.remove(card);
+            }
+        }
+
+        return cardPlay;
+
+        /*
+         * if (!this.playerCards.containsKey(cardProviderPlayer) ||
+         * this.playerCards.get(cardProviderPlayer).isEmpty()) {
+         * this.playerCards.get(cardProviderPlayerOpponent).addAll(leftOverCard);
+         * this.playerCards.remove(cardProviderPlayer);
+         * return null;
+         * } else {
+         * return this.playerCards.get(cardProviderPlayer).remove(0);
+         * }
+         */
     }
 
     @Override
@@ -112,8 +149,8 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
     }
 
-    //@Override
-    protected Queue<String> passTurn(Queue<String> players){
+    // @Override
+    protected Queue<String> passTurn(Queue<String> players) {
 
         String playerPass = players.poll();
         players.offer(playerPass);

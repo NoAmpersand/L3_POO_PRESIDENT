@@ -157,4 +157,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
         return players;
     }
+
+    protected fetchQofH
 }

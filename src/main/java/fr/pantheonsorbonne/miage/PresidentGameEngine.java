@@ -11,7 +11,7 @@ import java.util.*;
  */
 public abstract class PresidentGameEngine {
 
-    public static final int CARDS_IN_HAND_INITIAL_COUNT = 18;
+    public static final int CARDS_IN_HAND_INITIAL_COUNT = 13;
 
     /**
      * play a war game wit the provided players
@@ -103,8 +103,26 @@ public abstract class PresidentGameEngine {
         //DernièresCartesJouées est une ArrayList<Cards>
 
         Map winnerTemp = new HashMap<String, ArrayList<Card>>();
+        boolean endTurn1, endTurn2, endTurn3 = false;
+        boolean allEndTurn = false; //is true si tout endTurn-n = true
+        int turnPassCount = 0;
+        while (allEndTurn = false) {
+            ArrayList<Card> playerCards = getCardOrGameOver(roundDeck, firstPlayerInRound, secondPlayerInRound);
+            if (playerCards.isEmpty()) {
+                for()
+                players.remove(firstPlayerInRound);
+                return true;
+            }
+            if (turnPassCount == players.size() - 1) {
+                turnPassCount = 0;
+                break;
+
+            }
+        }
+
 
         /*Mettre while si fin de tour ou deux joueurs consécutifs ne peuvent pas jouer
+        dans la boucle : si Queue.length = 4 ET Joueur.passeSonTour() => joueur passe en fin de Queue
         dans la boucle : si Queue.length = 3 ET Joueur.passeSonTour() => joueur passe en fin de Queue
         dans la boucle : si Queue.length = 2 ET Joueur.passeSonTour() => joueur remove from Queue*/
         /*Ajouter variable consecutiveNoPlays = 0 on incrémente dès que quelqu'un passe son tour
@@ -151,7 +169,7 @@ public abstract class PresidentGameEngine {
      * @param cardProviderPlayerOpponent the Opponent of this player
      * @return a card of null if player cardProviderPlayer is gameover
      */
-    protected abstract Card getCardOrGameOver(Collection<Card> leftOverCard, String cardProviderPlayer, String cardProviderPlayerOpponent);
+    protected abstract Card getCardOrGameOver(HashMap<String, ArrayList<Card>> , String cardProviderPlayer, String cardProviderPlayerOpponent);
 
     /**
      * give the winner of a round

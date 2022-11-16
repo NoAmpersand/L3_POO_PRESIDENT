@@ -22,7 +22,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     public static void main(String... args) {
-        LocalPresidentGame localWarGame = new LocalPresidentGame(Set.of("Joueur1", "Joueur2", "Joueur3"));
+        LocalPresidentGame localWarGame = new LocalPresidentGame(Set.of("Joueur1", "Joueur2", "Joueur3", "Joueur4"));
         localWarGame.play();
 
 
@@ -55,12 +55,15 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    protected Card getCardOrGameOver(Collection<Card> leftOverCard, String cardProviderPlayer, String cardProviderPlayerOpponent) {
+    //Cette méthode prends les cartes du dernier gagnant et les cartes du joueur et le joueur renvoie une ou plusieurs cartes adéquates
+    protected ArrayList<Card> getCardOrGameOver(HashMap<String, ArrayList<Card>> winnerTemp, String namePlayer) {
         /*Méthode à changer :
         À partir de la main, on doit poser aucune ou plusieurs cartes de même valeur
         * Elle prend comme paramètre la main
           Elle return la main + cartes à jouer + variable passerLeTour ou passerLePli
         */
+        this.playerCards.get(namePlayer);
+
         if (!this.playerCards.containsKey(cardProviderPlayer) || this.playerCards.get(cardProviderPlayer).isEmpty()) {
             this.playerCards.get(cardProviderPlayerOpponent).addAll(leftOverCard);
             this.playerCards.remove(cardProviderPlayer);
@@ -85,5 +88,14 @@ public class LocalPresidentGame extends PresidentGameEngine {
         } else {
             return this.playerCards.get(player).remove(0);
         }
+    }
+
+    //@Override
+    protected Queue<String> passTurn(Queue<String> players){
+
+        String playerPass = players.poll();
+        players.offer(playerPass);
+
+        return players;
     }
 }

@@ -76,13 +76,14 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
         Map<Integer, Integer> playableCards = new HashMap<>();
         for(int cardValue : mapHand.keySet()){
-            if(winnerHand.get(0).valueToInt() <= cardValue){
-
-            }
-            if (winnerHand.size() <= mapHand.get(cardValue)){
-                playableCards.put(cardValue, mapHand.get(cardValue));
+            if(winnerHand.get(0).valueToInt() <= cardValue) {
+                if (winnerHand.size() <= mapHand.get(cardValue)) {
+                    playableCards.put(cardValue, mapHand.get(cardValue));
+                }
             }
         }
+        // appelle methode systemeExpert qui renvoie les cartes à jouer
+
 
 
         if (!this.playerCards.containsKey(cardProviderPlayer) || this.playerCards.get(cardProviderPlayer).isEmpty()) {

@@ -68,6 +68,7 @@ public class Card {
         return this.getValue().getRank();
     }
 
+
     public String toFancyString() {
         int rank = this.getValue().ordinal();
         if (rank > 10) {
@@ -83,5 +84,13 @@ public class Card {
      */
     public CardValue getValue() {
         return value;
+    }
+
+    public boolean verifQofH(){
+        if(this.getValue().getStringRepresentation() == "Q" && this.getColor().getCode() == 127137 + 16){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

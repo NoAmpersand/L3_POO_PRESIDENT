@@ -3,6 +3,7 @@ package fr.pantheonsorbonne.miage;
 import fr.pantheonsorbonne.miage.exception.NoMoreCardException;
 import fr.pantheonsorbonne.miage.game.Card;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -158,5 +159,23 @@ public class LocalPresidentGame extends PresidentGameEngine {
         return players;
     }
 
-    protected fetchQofH
+    protected String fetchQofH(){
+        String specialPlayer = "";
+
+        for(String player : playerCards.keySet()){
+            for(Card card : playerCards.get(player)){
+                if(card.verifQofH()){
+                    specialPlayer = player;
+                }
+            }
+        }
+
+        return specialPlayer;
+    }
+
+    protected ArrayList<Card> getPlayerCards(String playerName){
+
+
+        return playerCards.get(playerName);
+    }
 }

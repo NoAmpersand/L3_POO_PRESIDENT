@@ -3,7 +3,6 @@ package fr.pantheonsorbonne.miage;
 import fr.pantheonsorbonne.miage.exception.NoMoreCardException;
 import fr.pantheonsorbonne.miage.game.Card;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -83,10 +82,9 @@ public class LocalPresidentGame extends PresidentGameEngine {
             }
         }
         Map<Integer, Integer> playableCards = new HashMap<>();
-        for (int cardValue : mapHand.keySet()) {
-            if (winnerHand.get(0).valueToInt() <= cardValue) {
-                if (winnerHand.size() <= mapHand.get(cardValue)) {
-                    playableCards.put(cardValue, mapHand.get(cardValue));
+        for (Map.Entry<Integer, Integer> card : mapHand.entrySet()) {
+            if (winnerHand.get(0).valueToInt() <= card.getKey() && winnerHand.size() <= card.getValue()) {
+                    playableCards.put(card.getKey(), card.getValue());
                 }
             }
         }

@@ -2,8 +2,6 @@ package fr.pantheonsorbonne.miage;
 
 import fr.pantheonsorbonne.miage.exception.NoMoreCardException;
 import fr.pantheonsorbonne.miage.game.Card;
-
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -86,11 +84,20 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 mapHand.put(mapHand.get(card.valueToInt()), 1);
             }
         }
-        Map<Integer, Integer> playableCards = new HashMap<>();
-        for (int cardValue : mapHand.keySet()) {
-            if (winnerHand.get(0).valueToInt() <= cardValue) {
-                if (winnerHand.size() <= mapHand.get(cardValue)) {
-                    playableCards.put(cardValue, mapHand.get(cardValue));
+        HashMap<Integer, Integer> playableCards = new HashMap<>();
+
+        if (premierTour) {
+            for (Map.Entry<Integer, Integer> cardValue : playableCards.entrySet())  {
+                if (playableCards.containsKey(cardValue)) {
+                    playableCards.put(cardValue.getKey(), cardValue.getValue() + 1);
+                } else {
+                    playableCards.put(cardValue.getKey(), cardValue.getValue());
+                }
+            }
+        } else {
+            for (Map.Entry<Integer, Integer> cardValue : playableCards.entrySet())  {
+                if (winnerHand.get(0).valueToInt() <= cardValue.getKey() && winnerHand.size() <= cardValue.getValue()) {
+                    playableCards.put(cardValue.getKey(), cardValue.getValue());
                 }
             }
         }
@@ -125,18 +132,18 @@ public class LocalPresidentGame extends PresidentGameEngine {
         return cardPlay;
     }
 
-    protected TreeMap<Integer, Integer> systemeExpert(HashMap<Integer, Integer> playableCard,
+    protected TreeMap<Integer, Integer> systemeExpert(Map<Integer, Integer> playableCards,
             ArrayList<Card> winnerHand,
             boolean premierTour) {
 
         TreeMap<Integer, Integer> playCard = new TreeMap<>();
         if (premierTour) {
-            playCard = systemeExpertPremierTour(playableCard, winnerHand);
+            playCard = systemeExpertPremierTour(playableCards, winnerHand);
             return playCard;
         } else {
             int nbCardJouerLastWinner = winnerHand.size();
             for (int i = winnerHand.size(); i < 5; i++) {
-                for (Map.Entry<Integer, Integer> card : playableCard.entrySet()) {
+                for (Map.Entry<Integer, Integer> card : playableCards.entrySet()) {
                     if (card.getValue() == nbCardJouerLastWinner) {
                         playCard.put(card.getKey(), card.getValue());
                         break;
@@ -147,12 +154,12 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
     }
 
-    protected TreeMap<Integer, Integer> systemeExpertPremierTour(HashMap<Integer, Integer> playableCard,
+    protected TreeMap<Integer, Integer> systemeExpertPremierTour(Map<Integer, Integer> playableCards,
             ArrayList<Card> winnerHand) {
 
         int maxCardDouble = 0;
         int valMinDeMaxCardDouble = 100;
-        for (Map.Entry<Integer, Integer> card : playableCard.entrySet()){
+        for (Map.Entry<Integer, Integer> card : playableCards.entrySet()){
             if (maxCardDouble <= card.getValue() && valMinDeMaxCardDouble > card.getKey()) {
                 maxCardDouble = card.getValue();
                 valMinDeMaxCardDouble = card.getKey();

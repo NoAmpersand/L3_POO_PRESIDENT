@@ -9,7 +9,8 @@ import java.util.*;
 import javax.naming.NameParser;
 
 /**
- * this class is a abstract version of the engine, to be used locally on through the network
+ * this class is a abstract version of the engine, to be used locally on through
+ * the network
  */
 public abstract class PresidentGameEngine {
 
@@ -19,57 +20,54 @@ public abstract class PresidentGameEngine {
      * play a war game wit the provided players
      */
     public void play() {
-        //On initialise la main pour chaque joueur
+        // On initialise la main pour chaque joueur
         for (String playerName : getInitialPlayers()) {
-            //On prend des cartes aléatoires
+            // On prend des cartes aléatoires
             Card[] cards = Deck.getRandomCards(CARDS_IN_HAND_INITIAL_COUNT);
-            //On les change en String
+            // On les change en String
             String hand = Card.cardsToString(cards);
-            //On les donne au joueur
+            // On les donne au joueur
             giveCardsToPlayer(playerName, hand);
         }
         // Initialiser une queue avec tous les joueurs
         final Queue<String> players = new LinkedList<>(this.getInitialPlayers());
-        //Boucle while il reste + d'un joueur
+        // Boucle while il reste + d'un joueur
         while (players.size() > 1) {
-            //these are the cards played by the players on this round
-            //Les cartes joués dans un pli
+            // these are the cards played by the players on this round
+            // Les cartes joués dans un pli
             Queue<Card> roundDeck = new LinkedList<>();
 
-            //Si playerIsFinished() == true remove from Queue
-            //Méthode à ajouter : playerIsFinished()
+            // Si playerIsFinished() == true remove from Queue
+            // Méthode à ajouter : playerIsFinished()
 
-
-            //On ajoute le i-ième player dans la queue
+            // On ajoute le i-ième player dans la queue
             String firstPlayerInRound = players.poll();
-            //On le met directement dans la fin de la queue
+            // On le met directement dans la fin de la queue
             players.offer(firstPlayerInRound);
 
-            //On ajoute le i-ième player dans la queue
+            // On ajoute le i-ième player dans la queue
             String secondPlayerInRound = players.poll();
-            //On le met directement dans la fin de la queue
+            // On le met directement dans la fin de la queue
             players.offer(secondPlayerInRound);
 
-            //On ajoute le i-ième player dans la queue
+            // On ajoute le i-ième player dans la queue
             String thirdPlayerInRound = players.poll();
-            //On le met directement dans la fin de la queue
+            // On le met directement dans la fin de la queue
             players.offer(thirdPlayerInRound);
 
-            //On loop jusqu'à ce qu'il y ait un gagnant
+            // On loop jusqu'à ce qu'il y ait un gagnant
             while (true) {
 
-
-                if (playRound(players, firstPlayerInRound, secondPlayerInRound, roundDeck)) break;
+                if (playRound(players, firstPlayerInRound, secondPlayerInRound, roundDeck))
+                    break;
             }
-
 
         }
 
-
-        //Penser à stocker les perdants dans un HashMap<Joueur, Role>
-        //since we've left the loop, we have only 1 player left: the winner
+        // Penser à stocker les perdants dans un HashMap<Joueur, Role>
+        // since we've left the loop, we have only 1 player left: the winner
         String winner = players.poll();
-        //send him the gameover and leave
+        // send him the gameover and leave
         declareWinner(winner);
         System.out.println(winner + " won! bye");
         System.exit(0);
@@ -105,15 +103,21 @@ public abstract class PresidentGameEngine {
         //DernièresCartesJouées est une ArrayList<Cards>
 
         TreeMap<String, ArrayList<Card>>  winnerTemp = new TreeMap<>();
-        boolean endTurn1, endTurn2, endTurn3 = false;
+        boolean endTurn1, endTurn2, endTurn3, endTurn4 = false;
         boolean allEndTurn = false; //is true si tout endTurn-n = true
         int turnPassCount = 0;
+        ArrayList<Card> winnerHand = winnerTemp.firstEntry().getValue();
         while (allEndTurn = false) {
-
             String namePlayer = players.poll();
-            ArrayList<Card> playerCards = getCardOrGameOver( winnerTemp, namePlayer);
+            ArrayList<Card> playerCards = getCardOrGameOver(winnerTemp, namePlayer);
             if (playerCards.isEmpty()) {
-                for()
+                HashMap<Integer, Integer>  playerHand = getPlayerMapCard(namePlayer);
+                for(Integer cardValue : playerHand.keySet()){
+                    if(playerHand.get(cardValue) >= winnerHand.get(0).valueToInt()){
+                        
+                    }
+                }
+                }
                 players.remove(firstPlayerInRound);
                 return true;
             }
@@ -124,39 +128,48 @@ public abstract class PresidentGameEngine {
             }
         }
 
+    /*
+     * Mettre while si fin de tour ou deux joueurs consécutifs ne peuvent pas jouer
+     * dans la boucle : si Queue.length = 4 ET Joueur.passeSonTour() => joueur passe
+     * en fin de Queue
+     * dans la boucle : si Queue.length = 3 ET Joueur.passeSonTour() => joueur passe
+     * en fin de Queue
+     * dans la boucle : si Queue.length = 2 ET Joueur.passeSonTour() => joueur
+     * remove from Queue
+     */
+    /*
+     * Ajouter variable consecutiveNoPlays = 0 on incrémente dès que quelqu'un passe
+     * son tour
+     * Si consecutiveNoPlays > 1 on dit que le gagnant est le prochain joueur
+     */
+    // here, we try to get the first player card
 
-        /*Mettre while si fin de tour ou deux joueurs consécutifs ne peuvent pas jouer
-        dans la boucle : si Queue.length = 4 ET Joueur.passeSonTour() => joueur passe en fin de Queue
-        dans la boucle : si Queue.length = 3 ET Joueur.passeSonTour() => joueur passe en fin de Queue
-        dans la boucle : si Queue.length = 2 ET Joueur.passeSonTour() => joueur remove from Queue*/
-        /*Ajouter variable consecutiveNoPlays = 0 on incrémente dès que quelqu'un passe son tour
-        Si consecutiveNoPlays > 1 on dit que le gagnant est le prochain joueur */
-        //here, we try to get the first player card
-        Card firstPlayerCard = getCardOrGameOver(roundDeck, firstPlayerInRound, secondPlayerInRound);
+    // getCardOrGameOver nécessite implémentation de "passer le tour"
+    if(firstPlayerCard==null)
 
-        //getCardOrGameOver nécessite implémentation de "passer le tour"
-        if (firstPlayerCard == null) {
-            players.remove(firstPlayerInRound);
-            return true;
-        }
+    {
+        players.remove(firstPlayerInRound);
+        return true;
+    }
 
+    // put the two cards on the roundDeck
+    // On offer des tableaux de Card
+    // Si queue vide on offer tableaux de taille n (n = pairs|tri|carré)
+    // Else : prend 1er element, calcule arrayList[0].length = m
+    // On fait tableau de taille m
+    roundDeck.offer(firstPlayerCard);
 
-        //put the two cards on the roundDeck
-        //On offer des tableaux de Card
-        //Si queue vide on offer tableaux de taille n (n = pairs|tri|carré)
-        //Else : prend 1er element, calcule arrayList[0].length = m
-        //On fait tableau de taille m
-        roundDeck.offer(firstPlayerCard);
-
-        //compute who is the winner
-        //String winner = getWinner(firstPlayerInRound, secondPlayerInRound, firstPlayerCard, secondPlayerCard); => remplacée par winnerTemp
-        //if there's a winner, we distribute the card to him
-        if (winner != null) {
-            giveCardsToPlayer(roundDeck, winner);
-            return true;
-        }
-        //otherwise we do another round.
-        return false;
+    // compute who is the winner
+    // String winner = getWinner(firstPlayerInRound, secondPlayerInRound,
+    // firstPlayerCard, secondPlayerCard); => remplacée par winnerTemp
+    // if there's a winner, we distribute the card to him
+    if(winner!=null)
+    {
+        giveCardsToPlayer(roundDeck, winner);
+        return true;
+    }
+    // otherwise we do another round.
+    return false;
     }
 
     /**
@@ -167,14 +180,16 @@ public abstract class PresidentGameEngine {
     protected abstract void declareWinner(String winner);
 
     /**
-     * get a card from a player. If the player doesn't have a card, it will be declared loser and all the left over cards will be given to his opponent
+     * get a card from a player. If the player doesn't have a card, it will be
+     * declared loser and all the left over cards will be given to his opponent
      *
      * @param leftOverCard               card left over from another round
      * @param cardProviderPlayer         the player that should give a card
      * @param cardProviderPlayerOpponent the Opponent of this player
      * @return a card of null if player cardProviderPlayer is gameover
      */
-    protected abstract ArrayList<Card> getCardOrGameOver(TreeMap<String, ArrayList<Card>> winnerTemp, String namePlayer);
+    protected abstract ArrayList<Card> getCardOrGameOver(TreeMap<String, ArrayList<Card>> winnerTemp,
+            String namePlayer);
 
     /**
      * give the winner of a round
@@ -185,8 +200,9 @@ public abstract class PresidentGameEngine {
      * @param contestantBCard its card
      * @return the name of the winner or null if it's a tie
      */
-    protected static String getWinner(String contestantA, String contestantB, Card contestantACard, Card contestantBCard) {
-        //À changer avec les règles président
+    protected static String getWinner(String contestantA, String contestantB, Card contestantACard,
+            Card contestantBCard) {
+        // À changer avec les règles président
         if (contestantACard.getValue().getRank() > contestantBCard.getValue().getRank()) {
             return contestantA;
         } else if (contestantACard.getValue().getRank() < contestantBCard.getValue().getRank()) {
@@ -211,4 +227,6 @@ public abstract class PresidentGameEngine {
      * @throws NoMoreCardException if the player does not have a remaining card
      */
     protected abstract Card getCardFromPlayer(String player) throws NoMoreCardException;
+
+    protected abstract HashMap<Integer, Integer> getPlayerMapCard(String playerName);
 }

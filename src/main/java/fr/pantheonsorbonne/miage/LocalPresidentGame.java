@@ -2,6 +2,8 @@ package fr.pantheonsorbonne.miage;
 
 import fr.pantheonsorbonne.miage.exception.NoMoreCardException;
 import fr.pantheonsorbonne.miage.game.Card;
+
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -10,8 +12,8 @@ import java.util.stream.Collectors;
  */
 public class LocalPresidentGame extends PresidentGameEngine {
 
-    final Set<String> initialPlayers;
-    final Map<String, ArrayList<Card>> playerCards = new HashMap<>();
+    private final Set<String> initialPlayers;
+    private final Map<String, ArrayList<Card>> playerCards = new HashMap<>();
 
     public LocalPresidentGame(Set<String> initialPlayers) {
         this.initialPlayers = initialPlayers;
@@ -45,7 +47,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                         this.playerCards
                                 .keySet().stream().filter(p -> !this.playerCards.get(p).isEmpty()).map(
                                         p -> p + " has "
-                                                + this.playerCards.get(p).stream().map(Card::toFancyString)
+                                                + this.playerCards.get(p).stream().map(c -> c.toFancyString())
                                                         .collect(Collectors.joining(" ")))
                                 .collect(Collectors.joining("\n")));
         System.out.println();
@@ -84,20 +86,11 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 mapHand.put(mapHand.get(card.valueToInt()), 1);
             }
         }
-        HashMap<Integer, Integer> playableCards = new HashMap<>();
-
-        if (premierTour) {
-            for (Map.Entry<Integer, Integer> cardValue : mapHand.entrySet()) {
-                if (playableCards.containsKey(cardValue)) {
-                    playableCards.put(cardValue.getKey(), cardValue.getValue()+ 1);
-                } else {
-                    playableCards.put(cardValue.getKey(), cardValue.getValue());
-                }
-            }
-        } else {
-            for (Map.Entry<Integer, Integer> card : mapHand.entrySet()) {
-                if (winnerHand.get(0).valueToInt() <= card.getKey() && winnerHand.size() <= card.getValue()) {
-                    playableCards.put(card.getKey(), card.getValue());
+        Map<Integer, Integer> playableCards = new HashMap<>();
+        for (int cardValue : mapHand.keySet()) {
+            if (winnerHand.get(0).valueToInt() <= cardValue) {
+                if (winnerHand.size() <= mapHand.get(cardValue)) {
+                    playableCards.put(cardValue, mapHand.get(cardValue));
                 }
             }
         }
@@ -211,6 +204,8 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     protected ArrayList<Card> getPlayerCards(String playerName){
+
+
         return playerCards.get(playerName);
     }
 

@@ -46,7 +46,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                         this.playerCards
                                 .keySet().stream().filter(p -> !this.playerCards.get(p).isEmpty()).map(
                                         p -> p + " has "
-                                                + this.playerCards.get(p).stream().map(c -> c.toFancyString())
+                                                + this.playerCards.get(p).stream().map(Card::toFancyString)
                                                         .collect(Collectors.joining(" ")))
                                 .collect(Collectors.joining("\n")));
         System.out.println();

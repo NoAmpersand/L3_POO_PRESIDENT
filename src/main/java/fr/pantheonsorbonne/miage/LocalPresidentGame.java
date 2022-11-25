@@ -88,7 +88,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
         if (premierTour) {
             for (Map.Entry<Integer, Integer> cardValue : playableCards.entrySet())  {
-                if (playableCards.containsKey(cardValue)) {
+                if (playableCards.containsKey(cardValue.getKey())) {
                     playableCards.put(cardValue.getKey(), cardValue.getValue() + 1);
                 } else {
                     playableCards.put(cardValue.getKey(), cardValue.getValue());
@@ -103,8 +103,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
         // appelle methode systemeExpert qui renvoie les cartes à jouer
         // map<valeur carte qui sera jouer, nbcarte de cette valeur qui sera jouer
-        TreeMap<Integer, Integer> mapPlay = new TreeMap<>();
-        mapPlay = systemeExpert(playableCards, winnerHand, premierTour);
+        TreeMap<Integer, Integer> mapPlay = systemeExpert(playableCards, winnerHand, premierTour);
 
         ArrayList<Card> cardPlay = new ArrayList<>();
         int nbDeleteCard = 0;

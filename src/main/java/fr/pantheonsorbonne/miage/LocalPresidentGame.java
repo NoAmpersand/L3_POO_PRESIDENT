@@ -68,10 +68,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
          * Elle prend comme paramètre la main
          * Elle return la main + cartes à jouer + variable passerLeTour ou passerLePli
          */
-        boolean premierTour = false;
-        if (winnerTemp.isEmpty()) {
-            premierTour = true;
-        }
+        boolean premierTour = winnerTemp.isEmpty();
         ArrayList<Card> hand = this.playerCards.get(namePlayer);
         ArrayList<Card> winnerHand = winnerTemp.firstEntry().getValue();
         Map<Integer, Integer> mapHand = new HashMap<>();
@@ -112,7 +109,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
             if (nbDeleteCard >= mapPlay.firstEntry().getValue()) {
                 break;
             }
-            if (mapHand.get(card.valueToInt()) == mapPlay.firstEntry().getValue()) {
+            if (Objects.equals(mapHand.get(card.valueToInt()), mapPlay.firstEntry().getValue())) {
                 Card oneCard = hand.get(index);
                 cardPlay.add(oneCard);
                 nbDeleteCard += 1;
@@ -123,7 +120,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
             if (nbDeleteCard >= mapPlay.firstEntry().getValue()) {
                 break;
             }
-            if (mapHand.get(card.valueToInt()) == mapPlay.firstEntry().getValue()) {
+            if (Objects.equals(mapHand.get(card.valueToInt()), mapPlay.firstEntry().getValue())) {
                 hand.remove(card);
             }
         }
@@ -171,8 +168,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     @Override
     protected void giveCardsToPlayer(Collection<Card> roundStack, String winner) {
-        List<Card> cards = new ArrayList<>();
-        cards.addAll(roundStack);
+        List<Card> cards = new ArrayList<>(roundStack);
         Collections.shuffle(cards);
         this.playerCards.get(winner).addAll(cards);
     }

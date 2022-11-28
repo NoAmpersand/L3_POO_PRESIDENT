@@ -135,7 +135,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
         TreeMap<Integer, Integer> playCard = new TreeMap<>();
         if (premierTour) {
             playCard = systemeExpertPremierTour(playableCards, winnerHand);
-            return playCard;
         } else {
             int nbCardJouerLastWinner = winnerHand.size();
             for (int i = winnerHand.size(); i < 5; i++) {
@@ -146,8 +145,8 @@ public class LocalPresidentGame extends PresidentGameEngine {
                     }
                 }
             }
-            return playCard;
         }
+        return playCard;
     }
 
     protected TreeMap<Integer, Integer> systemeExpertPremierTour(Map<Integer, Integer> playableCards,

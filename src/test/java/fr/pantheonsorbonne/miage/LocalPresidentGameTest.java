@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.miage;
 
+import fr.pantheonsorbonne.miage.game.Card;
 import org.junit.jupiter.api.Test;
-import java.fr.pantheonsorbonne.miage.game.Card;
 import java.util.*;
 
 public class LocalPresidentGameTest {

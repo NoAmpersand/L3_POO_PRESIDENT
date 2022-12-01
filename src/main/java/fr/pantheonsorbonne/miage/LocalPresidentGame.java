@@ -84,7 +84,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         HashMap<Integer, Integer> playableCards = new HashMap<>();
 
         if (premierTour) {
-            for (Map.Entry<Integer, Integer> cardValue : playableCards.entrySet())  {
+            for (Map.Entry<Integer, Integer> cardValue : mapHand.entrySet())  {
                 if (playableCards.containsKey(cardValue.getKey())) {
                     playableCards.put(cardValue.getKey(), cardValue.getValue() + 1);
                 } else {
@@ -92,7 +92,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
         } else {
-            for (Map.Entry<Integer, Integer> cardValue : playableCards.entrySet())  {
+            for (Map.Entry<Integer, Integer> cardValue : mapHand.entrySet())  {
                 if (winnerHand.get(0).valueToInt() <= cardValue.getKey() && winnerHand.size() <= cardValue.getValue()) {
                     playableCards.put(cardValue.getKey(), cardValue.getValue());
                 }

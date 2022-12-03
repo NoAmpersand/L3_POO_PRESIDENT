@@ -58,32 +58,20 @@ public class LocalPresidentGame extends PresidentGameEngine {
         System.out.println(winner + " has won!");
     }
 
-    @Override
-    // Cette méthode prends les cartes du dernier gagnant et les cartes du joueur et
-    // le joueur renvoie une ou plusieurs cartes adéquates
-    protected ArrayList<Card> getCardOrGameOver(TreeMap<String, ArrayList<Card>> winnerTemp, String namePlayer) {
-        /*
-         * Méthode à changer :
-         * À partir de la main, on doit poser aucune ou plusieurs cartes de même valeur
-         * Elle prend comme paramètre la main
-         * Elle return la main + cartes à jouer + variable passerLeTour ou passerLePli
-         */
-        boolean premierTour = winnerTemp.isEmpty();
-        ArrayList<Card> hand = this.playerCards.get(namePlayer);
-        ArrayList<Card> winnerHand = winnerTemp.firstEntry().getValue();
-        Map<Integer, Integer> mapHand = new HashMap<>();
-        for (Card card : hand) {
-            if (mapHand.containsKey(card.valueToInt())) {
-                int valueToIncrement = mapHand.get(card.valueToInt());
+
+    protected void fillHand(Map<Integer, Integer> handToFill, ArrayList<Card> handToVerify){
+        for (Card card : handToVerify) {
+            if (handToFill.containsKey(card.valueToInt())) {
+                int valueToIncrement = handToFill.get(card.valueToInt());
                 valueToIncrement++;
-                mapHand.put(mapHand.get(card.valueToInt()), valueToIncrement);
+                handToFill.put(handToFill.get(card.valueToInt()), valueToIncrement);
             } else {
-                mapHand.put(mapHand.get(card.valueToInt()), 1);
+                handToFill.put(handToFill.get(card.valueToInt()), 1);
             }
         }
-        HashMap<Integer, Integer> playableCards = new HashMap<>();
-
-        if (premierTour) {
+    }
+    protected void fillPlayableCards(HashMap<Integer, Integer> playableCards, Map<Integer, Integer> mapHand, ArrayList<Card> winnerHand, boolean firstTurn){
+        if (firstTurn) {
             for (Map.Entry<Integer, Integer> cardValue : mapHand.entrySet())  {
                 if (playableCards.containsKey(cardValue.getKey())) {
                     playableCards.put(cardValue.getKey(), cardValue.getValue() + 1);
@@ -98,6 +86,24 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
         }
+    }
+    @Override
+    // Cette méthode prends les cartes du dernier gagnant et les cartes du joueur et
+    // le joueur renvoie une ou plusieurs cartes adéquates
+    protected ArrayList<Card> getCardOrGameOver(TreeMap<String, ArrayList<Card>> winnerTemp, String namePlayer) {
+        /*
+         * Méthode à changer :
+         * À partir de la main, on doit poser aucune ou plusieurs cartes de même valeur
+         * Elle prend comme paramètre la main
+         * Elle return la main + cartes à jouer + variable passerLeTour ou passerLePli
+         */
+        boolean premierTour = winnerTemp.isEmpty();
+        ArrayList<Card> hand = this.playerCards.get(namePlayer);
+        ArrayList<Card> winnerHand = winnerTemp.firstEntry().getValue();
+        Map<Integer, Integer> mapHand = new HashMap<>();
+        fillHand(mapHand, hand);
+        HashMap<Integer, Integer> playableCards = new HashMap<>();
+        fillPlayableCards(playableCards, mapHand, winnerHand, premierTour);
         // appelle methode systemeExpert qui renvoie les cartes à jouer
         // map<valeur carte qui sera jouer, nbcarte de cette valeur qui sera jouer
         TreeMap<Integer, Integer> mapPlay = systemeExpert(playableCards, winnerHand, premierTour);

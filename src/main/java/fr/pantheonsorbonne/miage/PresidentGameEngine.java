@@ -31,8 +31,7 @@ public abstract class PresidentGameEngine {
         final Queue<String> players = new LinkedList<>(this.getInitialPlayers());
         // L'ordre des gagnants
         Queue<String> ordrePlayersWin = new LinkedList<>();
-        // Les cartes joués dans un pli
-        Queue<Card> roundDeck = new LinkedList<>();
+
 
         // On ajoute le i-ième player dans la queue
         // On le met directement dans la fin de la queue
@@ -50,7 +49,7 @@ public abstract class PresidentGameEngine {
 
         // Boucle while il reste + d'un joueur
         while (players.size() > 1) {
-            playRound(players, roundDeck, ordrePlayersWin);
+            playRound(players, ordrePlayersWin);
         }
 
         String president = ordrePlayersWin.poll();
@@ -67,11 +66,7 @@ public abstract class PresidentGameEngine {
         System.exit(0);
     }
 
-    /**
-     * provide the list of the initial players to play the game
-     *
-     * @return
-     */
+
     protected abstract Set<String> getInitialPlayers();
 
     /**
@@ -83,47 +78,30 @@ public abstract class PresidentGameEngine {
     protected abstract void giveCardsToPlayer(String playerName, String hand);
 
     protected boolean allPlayerPass(HashMap<String, Boolean> endTurn) {
-        int compteurEndTurn = 0;
-        int nbJoueursRestantDansRound = 0;
-        for (Map.Entry<String, Boolean> endTurnUnJoueur : endTurn.entrySet()) {
-            if (Boolean.TRUE.equals(endTurnUnJoueur.getValue())) { // si boolean == false à tester proposition
+        int endTurnCounter = 0;
+        int remainingPlayersInTurn = 0;
+        for (Map.Entry<String, Boolean> playerEndTurn : endTurn.entrySet()) {
+            if (Boolean.TRUE.equals(playerEndTurn.getValue())) { // si boolean == false à tester proposition
                                                                    // sonarlink
-                compteurEndTurn += 1;
+                endTurnCounter += 1;
             }
-            nbJoueursRestantDansRound += 1;
+            remainingPlayersInTurn += 1;
         }
-        if (compteurEndTurn + 1 == nbJoueursRestantDansRound) {
-            return true;
-        } else {
-            return false;
-        }
+        return endTurnCounter + 1 == remainingPlayersInTurn;
     }
 
-    /**
-     * Play a single round
-     *
-     * @param players             the queue containing the remaining players
-     * @param firstPlayerInRound  the first contestant in this round
-     * @param secondPlayerInRound the second contestant in this roun
-     * @param roundDeck           possible cards left over from previous rounds
-     * @return true if we have a winner for this round, false otherwise
-     */
-    protected Queue<String> playRound(Queue<String> players, Queue<Card> roundDeck, Queue<String> ordrePlayersWin) {
 
-        // winnerTemp = HashMap<Joueur, DernièresCartesJouées>
-        // DernièresCartesJouées est une ArrayList<Cards>
-
-        // Initialisation des players pour marquer la fin de leur tour de jeu
+    protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin) {
         HashMap<String, Boolean> endTurn = new HashMap<>();
         for (String player : players) {
             endTurn.put(player, true);
         }
-        boolean allEndTurn = false; // is true si tout endTurn-n = true
+        boolean allEndTurn = false;
         int turnPassCount = 0;
         ArrayList<Card> winnerHand = new ArrayList<>();
         String winnerTemp = "";
         String namePlayer = players.poll();
-        while (!allEndTurn || winnerTemp.equals(namePlayer)) {
+        while (!allEndTurn || Objects.equals(winnerTemp, namePlayer)) {
             namePlayer = players.poll();
             ArrayList<Card> playerCards = getCardOrGameOver(winnerHand, namePlayer);
             if (playerCards.isEmpty()) {
@@ -133,8 +111,6 @@ public abstract class PresidentGameEngine {
                     return players;
                 }
                 for (Map.Entry<Integer, Integer> cardValue : playerHand.entrySet()) {
-                    // premier joueur à jouer dans la round doit poser une carte sinon il sort de la
-                    // round
                     if (cardValue.getKey() >= winnerHand.get(0).valueToInt()
                             && cardValue.getValue() >= winnerHand.size() && !winnerHand.isEmpty()) {
                         players.remove();
@@ -164,26 +140,10 @@ public abstract class PresidentGameEngine {
      */
     protected abstract void declareWinner(String winner);
 
-    /**
-     * get a card from a player. If the player doesn't have a card, it will be
-     * declared loser and all the left over cards will be given to his opponent
-     *
-     * @param leftOverCard               card left over from another round
-     * @param cardProviderPlayer         the player that should give a card
-     * @param cardProviderPlayerOpponent the Opponent of this player
-     * @return a card of null if player cardProviderPlayer is gameover
-     */
+
     protected abstract ArrayList<Card> getCardOrGameOver(ArrayList<Card> winnerHand, String namePlayer);
 
-    /**
-     * give the winner of a round
-     *
-     * @param contestantA     a contestant
-     * @param contestantB     another contestand
-     * @param contestantACard its card
-     * @param contestantBCard its card
-     * @return the name of the winner or null if it's a tie
-     */
+
     protected static String getWinner(String contestantA, String contestantB, Card contestantACard,
             Card contestantBCard) {
         // À changer avec les règles président

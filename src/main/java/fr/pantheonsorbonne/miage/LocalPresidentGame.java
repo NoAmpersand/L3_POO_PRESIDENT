@@ -38,7 +38,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    protected Queue<String> playRound(Queue<String> players, Queue<Card> roundDeck, Queue<String> ordrePlayersWin) {
+    protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin) {
         System.out.println("New round:");
         System.out
                 .println(
@@ -49,7 +49,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                                                         .collect(Collectors.joining(" ")))
                                 .collect(Collectors.joining("\n")));
         System.out.println();
-        return super.playRound(players, roundDeck, ordrePlayersWin);
+        return super.playRound(players, ordrePlayersWin);
 
     }
 

@@ -9,3 +9,13 @@ l
 <src/main/java/fr/pantheonsorbonne/miage/enums/CardColor.java,c\8\c875e52c36c117acd4e93004146824cc7682e611
 p
 @src/main/java/fr/pantheonsorbonne/miage/WarGameNetorkPlayer.java,8\e\8e107ffc8cf6b6b119bf48d0abfe0d848abbbc42
+s
+Csrc/test/java/fr/pantheonsorbonne/miage/LocalPresidentGameTest.java,4\4\444846eddcdaffcf199b2e895ea252122b1bfdd3
+q
+Asrc/main/java/fr/pantheonsorbonne/miage/WarGameNetworkEngine.java,b\b\bbd1eaa0b434818e9a8cd863b670bf44a645cda5
+d
+4src/test/java/fr/pantheonsorbonne/miage/AppTest.java,a\a\aa0778841f70a5dd059c443e00780baf1a8a90a5
+o
+?src/main/java/fr/pantheonsorbonne/miage/LocalPresidentGame.java,6\2\6262c5941e2abbba913f8e56979cf08853ba64aa
+p
+@src/main/java/fr/pantheonsorbonne/miage/PresidentGameEngine.java,d\b\dbff2336f7478bd715a9648552c122faa0850967

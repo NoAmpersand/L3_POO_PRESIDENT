@@ -38,7 +38,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    protected boolean playRound(Queue<String> players, String playerA, String playerB, Queue<Card> roundDeck) {
+    protected Queue<String> playRound(Queue<String> players, Queue<Card> roundDeck, Queue<String> ordrePlayersWin) {
         System.out.println("New round:");
         System.out
                 .println(
@@ -49,7 +49,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                                                         .collect(Collectors.joining(" ")))
                                 .collect(Collectors.joining("\n")));
         System.out.println();
-        return super.playRound(players, playerA, playerB, roundDeck);
+        return super.playRound(players, roundDeck, ordrePlayersWin);
 
     }
 
@@ -90,16 +90,15 @@ public class LocalPresidentGame extends PresidentGameEngine {
     @Override
     // Cette méthode prends les cartes du dernier gagnant et les cartes du joueur et
     // le joueur renvoie une ou plusieurs cartes adéquates
-    protected ArrayList<Card> getCardOrGameOver(TreeMap<String, ArrayList<Card>> winnerTemp, String namePlayer) {
+    protected ArrayList<Card> getCardOrGameOver(ArrayList<Card> winnerHand, String namePlayer) {
         /*
          * Méthode à changer :
          * À partir de la main, on doit poser aucune ou plusieurs cartes de même valeur
          * Elle prend comme paramètre la main
          * Elle return la main + cartes à jouer + variable passerLeTour ou passerLePli
          */
-        boolean premierTour = winnerTemp.isEmpty();
+        boolean premierTour = winnerHand.isEmpty();
         ArrayList<Card> hand = this.playerCards.get(namePlayer);
-        ArrayList<Card> winnerHand = winnerTemp.firstEntry().getValue();
         Map<Integer, Integer> mapHand = new HashMap<>();
         fillHand(mapHand, hand);
         HashMap<Integer, Integer> playableCards = new HashMap<>();
@@ -140,7 +139,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
         TreeMap<Integer, Integer> playCard = new TreeMap<>();
         if (premierTour) {
-            playCard = systemeExpertPremierTour(playableCards, winnerHand);
+            playCard = systemeExpertPremierTour(playableCards);
         } else {
             int nbCardJouerLastWinner = winnerHand.size();
             for (int i = winnerHand.size(); i < 5; i++) {
@@ -155,8 +154,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         return playCard;
     }
 
-    protected TreeMap<Integer, Integer> systemeExpertPremierTour(Map<Integer, Integer> playableCards,
-            ArrayList<Card> winnerHand) {
+    protected TreeMap<Integer, Integer> systemeExpertPremierTour(Map<Integer, Integer> playableCards) {
 
         int maxCardDouble = 0;
         int valMinDeMaxCardDouble = 100;

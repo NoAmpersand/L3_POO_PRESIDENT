@@ -105,7 +105,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         fillPlayableCards(playableCards, mapHand, winnerHand, premierTour);
         // appelle methode systemeExpert qui renvoie les cartes à jouer
         // map<valeur carte qui sera jouer, nbcarte de cette valeur qui sera jouer
-        TreeMap<Integer, Integer> mapPlay = systemeExpert(playableCards, winnerHand, premierTour);
+        TreeMap<Integer, Integer> mapPlay = expertSystem(playableCards, winnerHand, premierTour);
 
         ArrayList<Card> cardPlay = new ArrayList<>();
         int nbDeleteCard = 0;
@@ -133,13 +133,13 @@ public class LocalPresidentGame extends PresidentGameEngine {
         return cardPlay;
     }
 
-    protected TreeMap<Integer, Integer> systemeExpert(Map<Integer, Integer> playableCards,
-            ArrayList<Card> winnerHand,
-            boolean premierTour) {
+    protected TreeMap<Integer, Integer> expertSystem(Map<Integer, Integer> playableCards,
+                                                     ArrayList<Card> winnerHand,
+                                                     boolean premierTour) {
 
         TreeMap<Integer, Integer> playCard = new TreeMap<>();
         if (premierTour) {
-            playCard = systemeExpertPremierTour(playableCards);
+            playCard = firstTurnExpertSystem(playableCards);
         } else {
             int nbCardJouerLastWinner = winnerHand.size();
             for (int i = winnerHand.size(); i < 5; i++) {
@@ -154,18 +154,18 @@ public class LocalPresidentGame extends PresidentGameEngine {
         return playCard;
     }
 
-    protected TreeMap<Integer, Integer> systemeExpertPremierTour(Map<Integer, Integer> playableCards) {
+    protected TreeMap<Integer, Integer> firstTurnExpertSystem(Map<Integer, Integer> playableCards) {
 
         int maxCardDouble = 0;
-        int valMinDeMaxCardDouble = 100;
+        int minValueOfMaxCardDouble = 100;
         for (Map.Entry<Integer, Integer> card : playableCards.entrySet()){
-            if (maxCardDouble <= card.getValue() && valMinDeMaxCardDouble > card.getKey()) {
+            if (maxCardDouble <= card.getValue() && minValueOfMaxCardDouble > card.getKey()) {
                 maxCardDouble = card.getValue();
-                valMinDeMaxCardDouble = card.getKey();
+                minValueOfMaxCardDouble = card.getKey();
             }
         }
         TreeMap<Integer, Integer> playCard = new TreeMap<>();
-        playCard.put(valMinDeMaxCardDouble, maxCardDouble);
+        playCard.put(minValueOfMaxCardDouble, maxCardDouble);
         return playCard;
     }
 

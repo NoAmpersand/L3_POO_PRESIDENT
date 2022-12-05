@@ -90,13 +90,29 @@ public abstract class PresidentGameEngine {
         return endTurnCounter + 1 == remainingPlayersInTurn;
     }
 
+    private void endTurnFiller(HashMap<String, Boolean> endTurn, Queue<String> players){
+        for (String player : players) {
+            endTurn.put(player, true);
+        }
+    }
+
+    private void playerHandFiller(Queue<String> players, ArrayList<Card> winnerHand, HashMap<Integer, Integer> playerHand, String namePlayer, HashMap<String, Boolean> endTurn){
+        for (Map.Entry<Integer, Integer> cardValue : playerHand.entrySet()) {
+            if (cardValue.getKey() >= winnerHand.get(0).valueToInt()
+                    && cardValue.getValue() >= winnerHand.size() && !winnerHand.isEmpty()) {
+                players.remove();
+                players.add(namePlayer);
+            } else {
+                endTurn.put(namePlayer, false);
+                players.remove();
+            }
+        }
+    }
 
 
     protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin) {
         HashMap<String, Boolean> endTurn = new HashMap<>();
-        for (String player : players) {
-            endTurn.put(player, true);
-        }
+        endTurnFiller(endTurn, players);
         boolean allEndTurn = false;
         int turnPassCount = 0;
         ArrayList<Card> winnerHand = new ArrayList<>();
@@ -111,16 +127,7 @@ public abstract class PresidentGameEngine {
                     ordrePlayersWin.add(namePlayer);
                     return players;
                 }
-                for (Map.Entry<Integer, Integer> cardValue : playerHand.entrySet()) {
-                    if (cardValue.getKey() >= winnerHand.get(0).valueToInt()
-                            && cardValue.getValue() >= winnerHand.size() && !winnerHand.isEmpty()) {
-                        players.remove();
-                        players.add(namePlayer);
-                    } else {
-                        endTurn.put(namePlayer, false);
-                        players.remove();
-                    }
-                }
+                playerHandFiller(players, winnerHand, playerHand,namePlayer, endTurn);
                 turnPassCount += 1;
             } else {
                 winnerHand = playerCards;

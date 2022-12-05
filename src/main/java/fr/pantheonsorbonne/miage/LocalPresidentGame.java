@@ -177,14 +177,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
     }
 
-    // @Override
-    protected Queue<String> passTurn(Queue<String> players) {
-
-        String playerPass = players.poll();
-        players.offer(playerPass);
-
-        return players;
-    }
 
     protected String fetchQofH() {
         String specialPlayer = "";

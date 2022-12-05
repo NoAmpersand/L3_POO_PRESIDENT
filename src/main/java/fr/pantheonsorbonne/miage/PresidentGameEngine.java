@@ -152,16 +152,6 @@ public abstract class PresidentGameEngine {
     protected abstract ArrayList<Card> getCardOrGameOver(ArrayList<Card> winnerHand, String namePlayer);
 
 
-    protected static String getWinner(String contestantA, String contestantB, Card contestantACard,
-            Card contestantBCard) {
-        // À changer avec les règles président
-        if (contestantACard.getValue().getRank() > contestantBCard.getValue().getRank()) {
-            return contestantA;
-        } else if (contestantACard.getValue().getRank() < contestantBCard.getValue().getRank()) {
-            return contestantB;
-        }
-        return null;
-    }
 
     /**
      * give some card to a player

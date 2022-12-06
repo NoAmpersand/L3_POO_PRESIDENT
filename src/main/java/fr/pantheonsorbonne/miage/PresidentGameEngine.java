@@ -119,7 +119,6 @@ public abstract class PresidentGameEngine {
         String winnerTemp = "";
         String namePlayer = players.peek();
         while (!allEndTurn || Objects.equals(winnerTemp, namePlayer)) {
-            System.out.println(players);
             namePlayer = players.poll();
             ArrayList<Card> playerCards = getCardOrGameOver(winnerHand, namePlayer);
             System.out.println(playerCards);

@@ -5,6 +5,8 @@ import fr.pantheonsorbonne.miage.game.Card;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.apache.camel.model.dataformat.SyslogDataFormat;
+
 /**
  * this class implements the war game locally
  */
@@ -58,11 +60,11 @@ public class LocalPresidentGame extends PresidentGameEngine {
         System.out.println(winner + " has won!");
     }
 
-    protected void fillHand(Map<Integer, Integer> handToFill, ArrayList<Card> handToVerify){
+    protected void fillHand(Map<Integer, Integer> handToFill, ArrayList<Card> handToVerify) {
         System.out.println(handToVerify);
         for (Card card : handToVerify) {
             if (handToFill.containsKey(card.valueToInt())) {
-                handToFill.put(card.valueToInt(), handToFill.get(card.valueToInt())+1);
+                handToFill.put(card.valueToInt(), handToFill.get(card.valueToInt()) + 1);
             } else {
                 handToFill.put(card.valueToInt(), 1);
             }
@@ -115,15 +117,14 @@ public class LocalPresidentGame extends PresidentGameEngine {
             }
             index += 1;
         }
-        for (Card card : hand) {
-            if (nbDeleteCard >= mapPlay.firstEntry().getValue()) {
-                break;
-            }
-            if (Objects.equals(mapHand.get(card.valueToInt()), mapPlay.firstEntry().getValue())) {
-                hand.remove(card);
+        for (int i = 0; i <= nbDeleteCard; i++) {
+            for (Card card : hand) {
+                if (cardPlay.contains(card) || mapPlay.firstEntry() == null) {
+                    hand.remove(card);
+                    break;
+                }
             }
         }
-
         return cardPlay;
     }
 
@@ -144,6 +145,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                     }
                 }
             }
+            System.out.println(playCard);
         }
         return playCard;
     }
@@ -160,6 +162,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
         TreeMap<Integer, Integer> playCard = new TreeMap<>();
         playCard.put(minValueOfMaxCardDouble, maxCardDouble);
+        System.out.println(playCard);
         return playCard;
     }
 

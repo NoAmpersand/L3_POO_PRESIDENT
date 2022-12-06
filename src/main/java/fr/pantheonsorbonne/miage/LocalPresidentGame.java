@@ -102,7 +102,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
         HashMap<Integer, Integer> playableCards = new HashMap<>();
         fillPlayableCards(playableCards, mapHand, winnerHand, premierTour);
         TreeMap<Integer, Integer> mapPlay = expertSystem(playableCards, winnerHand, premierTour);
-
         ArrayList<Card> cardPlay = new ArrayList<>();
         int nbDeleteCard = 0;
         int index = 0;
@@ -110,8 +109,9 @@ public class LocalPresidentGame extends PresidentGameEngine {
             if (nbDeleteCard >= mapPlay.firstEntry().getValue()) {
                 break;
             }
-            if (Objects.equals(mapHand.get(card.valueToInt()), mapPlay.firstEntry().getValue())) {
+            if (card.valueToInt() == mapPlay.firstEntry().getKey()) {
                 Card oneCard = hand.get(index);
+                System.out.println("one card : " + oneCard);
                 cardPlay.add(oneCard);
                 nbDeleteCard += 1;
             }
@@ -125,6 +125,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
         }
+        Collections.copy(this.playerCards.get(namePlayer), hand);
         return cardPlay;
     }
 

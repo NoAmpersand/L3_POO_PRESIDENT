@@ -117,10 +117,12 @@ public abstract class PresidentGameEngine {
         int turnPassCount = 0;
         ArrayList<Card> winnerHand = new ArrayList<>();
         String winnerTemp = "";
-        String namePlayer = players.poll();
+        String namePlayer = players.peek();
         while (!allEndTurn || Objects.equals(winnerTemp, namePlayer)) {
+            System.out.println(players);
             namePlayer = players.poll();
             ArrayList<Card> playerCards = getCardOrGameOver(winnerHand, namePlayer);
+            System.out.println(playerCards);
             if (playerCards.isEmpty()) {
                 HashMap<Integer, Integer> playerHand = getPlayerMapCard(namePlayer);
                 if (playerHand.isEmpty()) {
@@ -132,7 +134,7 @@ public abstract class PresidentGameEngine {
             } else {
                 winnerHand = playerCards;
                 winnerTemp = namePlayer;
-
+                players.offer(namePlayer);
             }
             if (allPlayerPass(endTurn) || turnPassCount == players.size() - 1) {
                 allEndTurn = true;

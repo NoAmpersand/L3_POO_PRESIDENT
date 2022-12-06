@@ -41,7 +41,5 @@ public class AppTest
         test1.playerCards.put("J2", cardP2);
 
         assertEquals("J1", test1.fetchQofH());
-
-
     }
 }

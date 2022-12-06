@@ -18,8 +18,8 @@ public class LocalPresidentGameTest {
         //LocalPresidentGame.getCardOrGameOver(winnerTemp, namePlayer);
     }
 
-    public static void main(String... args) {
+    /*public static void main(String... args) {
         depotCarteValide();
-    }
+    }*/
 
 }

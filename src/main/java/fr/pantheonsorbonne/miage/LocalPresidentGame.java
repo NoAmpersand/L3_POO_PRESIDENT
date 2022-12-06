@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class LocalPresidentGame extends PresidentGameEngine {
 
     private final Set<String> initialPlayers;
-    private final Map<String, ArrayList<Card>> playerCards = new HashMap<>();
+    final Map<String, ArrayList<Card>> playerCards = new HashMap<>();
 
     public LocalPresidentGame(Set<String> initialPlayers) {
         this.initialPlayers = initialPlayers;
@@ -58,21 +58,22 @@ public class LocalPresidentGame extends PresidentGameEngine {
         System.out.println(winner + " has won!");
     }
 
-
     protected void fillHand(Map<Integer, Integer> handToFill, ArrayList<Card> handToVerify){
+        System.out.println(handToVerify);
         for (Card card : handToVerify) {
             if (handToFill.containsKey(card.valueToInt())) {
-                int valueToIncrement = handToFill.get(card.valueToInt());
-                valueToIncrement++;
-                handToFill.put(handToFill.get(card.valueToInt()), valueToIncrement);
+                handToFill.put(card.valueToInt(), handToFill.get(card.valueToInt())+1);
             } else {
-                handToFill.put(handToFill.get(card.valueToInt()), 1);
+                handToFill.put(card.valueToInt(), 1);
             }
         }
+        System.out.println(handToFill);
     }
-    protected void fillPlayableCards(HashMap<Integer, Integer> playableCards, Map<Integer, Integer> mapHand, ArrayList<Card> winnerHand, boolean firstTurn){
+
+    protected void fillPlayableCards(HashMap<Integer, Integer> playableCards, Map<Integer, Integer> mapHand,
+            ArrayList<Card> winnerHand, boolean firstTurn) {
         if (firstTurn) {
-            for (Map.Entry<Integer, Integer> cardValue : mapHand.entrySet())  {
+            for (Map.Entry<Integer, Integer> cardValue : mapHand.entrySet()) {
                 if (playableCards.containsKey(cardValue.getKey())) {
                     playableCards.put(cardValue.getKey(), cardValue.getValue() + 1);
                 } else {
@@ -80,13 +81,14 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
         } else {
-            for (Map.Entry<Integer, Integer> cardValue : mapHand.entrySet())  {
+            for (Map.Entry<Integer, Integer> cardValue : mapHand.entrySet()) {
                 if (winnerHand.get(0).valueToInt() <= cardValue.getKey() && winnerHand.size() <= cardValue.getValue()) {
                     playableCards.put(cardValue.getKey(), cardValue.getValue());
                 }
             }
         }
     }
+
     @Override
     // Cette méthode prends les cartes du dernier gagnant et les cartes du joueur et
     // le joueur renvoie une ou plusieurs cartes adéquates
@@ -126,8 +128,8 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     protected TreeMap<Integer, Integer> expertSystem(Map<Integer, Integer> playableCards,
-                                                     ArrayList<Card> winnerHand,
-                                                     boolean premierTour) {
+            ArrayList<Card> winnerHand,
+            boolean premierTour) {
 
         TreeMap<Integer, Integer> playCard = new TreeMap<>();
         if (premierTour) {
@@ -150,7 +152,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
         int maxCardDouble = 0;
         int minValueOfMaxCardDouble = 100;
-        for (Map.Entry<Integer, Integer> card : playableCards.entrySet()){
+        for (Map.Entry<Integer, Integer> card : playableCards.entrySet()) {
             if (maxCardDouble <= card.getValue() && minValueOfMaxCardDouble > card.getKey()) {
                 maxCardDouble = card.getValue();
                 minValueOfMaxCardDouble = card.getKey();
@@ -177,7 +179,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
     }
 
-
     protected String fetchQofH() {
         String specialPlayer = "";
 
@@ -192,8 +193,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         return specialPlayer;
     }
 
-    protected ArrayList<Card> getPlayerCards(String playerName){
-
+    protected ArrayList<Card> getPlayerCards(String playerName) {
 
         return playerCards.get(playerName);
     }

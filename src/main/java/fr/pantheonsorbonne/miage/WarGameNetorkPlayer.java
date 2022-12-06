@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.miage;
+/*package fr.pantheonsorbonne.miage;
 
 import fr.pantheonsorbonne.miage.game.Card;
 import fr.pantheonsorbonne.miage.model.Game;
@@ -9,9 +9,6 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-/**
- * this is the player part of the network version of the war game
- */
 public class WarGameNetorkPlayer {
 
     static final String playerId = "Player-" + new Random().nextInt();
@@ -70,3 +67,4 @@ public class WarGameNetorkPlayer {
         System.exit(0);
     }
 }
+*/

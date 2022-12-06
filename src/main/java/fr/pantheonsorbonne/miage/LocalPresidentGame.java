@@ -5,8 +5,6 @@ import fr.pantheonsorbonne.miage.game.Card;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.apache.camel.model.dataformat.SyslogDataFormat;
-
 /**
  * this class implements the war game locally
  */
@@ -61,7 +59,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     protected void fillHand(Map<Integer, Integer> handToFill, ArrayList<Card> handToVerify) {
-        System.out.println(handToVerify);
         for (Card card : handToVerify) {
             if (handToFill.containsKey(card.valueToInt())) {
                 handToFill.put(card.valueToInt(), handToFill.get(card.valueToInt()) + 1);
@@ -69,7 +66,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 handToFill.put(card.valueToInt(), 1);
             }
         }
-        System.out.println(handToFill);
     }
 
     protected void fillPlayableCards(HashMap<Integer, Integer> playableCards, Map<Integer, Integer> mapHand,
@@ -91,6 +87,19 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
     }
 
+    protected void deleteCardInHand(int nbDeleteCard, ArrayList<Card> hand, ArrayList<Card> cardPlay,
+            TreeMap<Integer, Integer> mapPlay, String namePlayer) {
+        for (int i = 0; i <= nbDeleteCard; i++) {
+            for (Card card : hand) {
+                if (cardPlay.contains(card) || mapPlay.firstEntry() == null) {
+                    hand.remove(card);
+                    break;
+                }
+            }
+        }
+        Collections.copy(this.playerCards.get(namePlayer), hand);
+    }
+
     @Override
     // Cette méthode prends les cartes du dernier gagnant et les cartes du joueur et
     // le joueur renvoie une ou plusieurs cartes adéquates
@@ -105,27 +114,24 @@ public class LocalPresidentGame extends PresidentGameEngine {
         ArrayList<Card> cardPlay = new ArrayList<>();
         int nbDeleteCard = 0;
         int index = 0;
-        for (Card card : hand) {
-            if (nbDeleteCard >= mapPlay.firstEntry().getValue()) {
-                break;
-            }
-            if (card.valueToInt() == mapPlay.firstEntry().getKey()) {
-                Card oneCard = hand.get(index);
-                System.out.println("one card : " + oneCard);
-                cardPlay.add(oneCard);
-                nbDeleteCard += 1;
-            }
-            index += 1;
-        }
-        for (int i = 0; i <= nbDeleteCard; i++) {
+        if (!(mapPlay.firstEntry() == null)) {
             for (Card card : hand) {
-                if (cardPlay.contains(card) || mapPlay.firstEntry() == null) {
-                    hand.remove(card);
+                if (nbDeleteCard >= mapPlay.firstEntry().getValue()) {
                     break;
                 }
+                if (card.valueToInt() == mapPlay.firstEntry().getKey()) {
+                    Card oneCard = hand.get(index);
+                    cardPlay.add(oneCard);
+                    nbDeleteCard += 1;
+                }
+                index += 1;
             }
         }
-        Collections.copy(this.playerCards.get(namePlayer), hand);
+        System.out.println(namePlayer);
+        System.out.println(hand);
+        System.out.println(cardPlay);
+        deleteCardInHand(nbDeleteCard, hand, cardPlay, mapPlay, namePlayer);
+        System.out.println("hand retirer " + hand);
         return cardPlay;
     }
 
@@ -146,7 +152,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
                     }
                 }
             }
-            System.out.println(playCard);
         }
         return playCard;
     }
@@ -163,7 +168,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
         TreeMap<Integer, Integer> playCard = new TreeMap<>();
         playCard.put(minValueOfMaxCardDouble, maxCardDouble);
-        System.out.println(playCard);
         return playCard;
     }
 
@@ -209,9 +213,9 @@ public class LocalPresidentGame extends PresidentGameEngine {
             if (mapHand.containsKey(card.valueToInt())) {
                 int valueToIncrement = mapHand.get(card.valueToInt());
                 valueToIncrement++;
-                mapHand.put(mapHand.get(card.valueToInt()), valueToIncrement);
+                mapHand.put(card.valueToInt(), valueToIncrement);
             } else {
-                mapHand.put(mapHand.get(card.valueToInt()), 1);
+                mapHand.put(card.valueToInt(), 1);
             }
         }
         return mapHand;

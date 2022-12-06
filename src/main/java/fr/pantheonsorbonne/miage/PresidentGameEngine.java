@@ -28,10 +28,9 @@ public abstract class PresidentGameEngine {
             giveCardsToPlayer(playerName, hand);
         }
         // Initialiser une queue avec tous les joueurs
-        final Queue<String> players = new LinkedList<>(this.getInitialPlayers());
+        Queue<String> players = new LinkedList<>(this.getInitialPlayers());
         // L'ordre des gagnants
         Queue<String> ordrePlayersWin = new LinkedList<>();
-
 
         // On ajoute le i-ième player dans la queue
         // On le met directement dans la fin de la queue
@@ -49,7 +48,7 @@ public abstract class PresidentGameEngine {
 
         // Boucle while il reste + d'un joueur
         while (players.size() > 1) {
-            playRound(players, ordrePlayersWin);
+            players = playRound(players, ordrePlayersWin);
         }
 
         String president = ordrePlayersWin.poll();
@@ -66,7 +65,6 @@ public abstract class PresidentGameEngine {
         System.exit(0);
     }
 
-
     protected abstract Set<String> getInitialPlayers();
 
     /**
@@ -82,7 +80,7 @@ public abstract class PresidentGameEngine {
         int remainingPlayersInTurn = 0;
         for (Map.Entry<String, Boolean> playerEndTurn : endTurn.entrySet()) {
             if (Boolean.TRUE.equals(playerEndTurn.getValue())) { // si boolean == false à tester proposition
-                                                                   // sonarlink
+                                                                 // sonarlink
                 endTurnCounter += 1;
             }
             remainingPlayersInTurn += 1;
@@ -90,25 +88,28 @@ public abstract class PresidentGameEngine {
         return endTurnCounter + 1 == remainingPlayersInTurn;
     }
 
-    private void endTurnFiller(HashMap<String, Boolean> endTurn, Queue<String> players){
+    private void endTurnFiller(HashMap<String, Boolean> endTurn, Queue<String> players) {
         for (String player : players) {
             endTurn.put(player, true);
         }
     }
 
-    private void playerHandFiller(Queue<String> players, ArrayList<Card> winnerHand, HashMap<Integer, Integer> playerHand, String namePlayer, HashMap<String, Boolean> endTurn){
+    private void playerHandFiller(Queue<String> players, ArrayList<Card> winnerHand,
+            HashMap<Integer, Integer> playerHand, String namePlayer, HashMap<String, Boolean> endTurn) {
+        boolean passTour = false;
         for (Map.Entry<Integer, Integer> cardValue : playerHand.entrySet()) {
-            if (cardValue.getKey() >= winnerHand.get(0).valueToInt()
-                    && cardValue.getValue() >= winnerHand.size() && !winnerHand.isEmpty()) {
+            if (cardValue.getKey() >= winnerHand.get(0).valueToInt() && !winnerHand.isEmpty()) {
                 players.remove();
                 players.add(namePlayer);
-            } else {
-                endTurn.put(namePlayer, false);
-                players.remove();
+                passTour = true;
+                break;
             }
         }
+        if (!passTour) {
+            endTurn.put(namePlayer, false);
+            players.remove();
+        }
     }
-
 
     protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin) {
         HashMap<String, Boolean> endTurn = new HashMap<>();
@@ -117,18 +118,20 @@ public abstract class PresidentGameEngine {
         int turnPassCount = 0;
         ArrayList<Card> winnerHand = new ArrayList<>();
         String winnerTemp = "";
-        String namePlayer = players.peek();
-        while (!allEndTurn || Objects.equals(winnerTemp, namePlayer)) {
+        String namePlayer;
+        while (!allEndTurn) {
             namePlayer = players.poll();
+            if (winnerTemp.equals(namePlayer)) {
+                break;
+            }
             ArrayList<Card> playerCards = getCardOrGameOver(winnerHand, namePlayer);
-            System.out.println(playerCards);
             if (playerCards.isEmpty()) {
                 HashMap<Integer, Integer> playerHand = getPlayerMapCard(namePlayer);
                 if (playerHand.isEmpty()) {
                     ordrePlayersWin.add(namePlayer);
                     return players;
                 }
-                playerHandFiller(players, winnerHand, playerHand,namePlayer, endTurn);
+                playerHandFiller(players, winnerHand, playerHand, namePlayer, endTurn);
                 turnPassCount += 1;
             } else {
                 winnerHand = playerCards;
@@ -138,6 +141,9 @@ public abstract class PresidentGameEngine {
             if (allPlayerPass(endTurn) || turnPassCount == players.size() - 1) {
                 allEndTurn = true;
             }
+            System.out.println("ordre " + players);
+            System.out.println("ordre winner : " + ordrePlayersWin);
+            System.out.println("winner Temp " + winnerTemp);
         }
         return players;
     }
@@ -149,10 +155,7 @@ public abstract class PresidentGameEngine {
      */
     protected abstract void declareWinner(String winner);
 
-
     protected abstract ArrayList<Card> getCardOrGameOver(ArrayList<Card> winnerHand, String namePlayer);
-
-
 
     /**
      * give some card to a player

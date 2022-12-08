@@ -38,7 +38,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin) {
+    protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin, Queue<String> ordrePlayerBase) {
         System.out.println("New round:");
         System.out
                 .println(
@@ -49,7 +49,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                                                         .collect(Collectors.joining(" ")))
                                 .collect(Collectors.joining("\n")));
         System.out.println();
-        return super.playRound(players, ordrePlayersWin);
+        return super.playRound(players, ordrePlayersWin, ordrePlayerBase);
 
     }
 
@@ -89,6 +89,9 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     protected void deleteCardInHand(int nbDeleteCard, ArrayList<Card> hand, ArrayList<Card> cardPlay,
             TreeMap<Integer, Integer> mapPlay, String namePlayer) {
+        if (nbDeleteCard == 0) {
+            return;
+        }
         for (int i = 0; i <= nbDeleteCard; i++) {
             for (Card card : hand) {
                 if (cardPlay.contains(card) || mapPlay.firstEntry() == null) {
@@ -104,17 +107,22 @@ public class LocalPresidentGame extends PresidentGameEngine {
     // Cette méthode prends les cartes du dernier gagnant et les cartes du joueur et
     // le joueur renvoie une ou plusieurs cartes adéquates
     protected ArrayList<Card> getCardOrGameOver(ArrayList<Card> winnerHand, String namePlayer) {
+        System.out.println("--------------------------------");
+        System.out.println("joueur play " + namePlayer);
         boolean premierTour = winnerHand.isEmpty();
         ArrayList<Card> hand = this.playerCards.get(namePlayer);
+        System.out.println("main joueur : " + hand);
         Map<Integer, Integer> mapHand = new HashMap<>();
         fillHand(mapHand, hand);
         HashMap<Integer, Integer> playableCards = new HashMap<>();
         fillPlayableCards(playableCards, mapHand, winnerHand, premierTour);
+        System.out.println("carte jouable : " + playableCards);
         TreeMap<Integer, Integer> mapPlay = expertSystem(playableCards, winnerHand, premierTour);
         ArrayList<Card> cardPlay = new ArrayList<>();
         int nbDeleteCard = 0;
         int index = 0;
-        if (!(mapPlay.firstEntry() == null)) {
+        System.out.println(mapPlay.firstEntry());
+        if (mapPlay.firstEntry() != null) {
             for (Card card : hand) {
                 if (nbDeleteCard >= mapPlay.firstEntry().getValue()) {
                     break;
@@ -127,32 +135,28 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 index += 1;
             }
         }
-        System.out.println(namePlayer);
-        System.out.println(hand);
         System.out.println(cardPlay);
         deleteCardInHand(nbDeleteCard, hand, cardPlay, mapPlay, namePlayer);
+
         System.out.println("hand retirer " + hand);
         return cardPlay;
     }
 
     protected TreeMap<Integer, Integer> expertSystem(Map<Integer, Integer> playableCards,
-            ArrayList<Card> winnerHand,
-            boolean premierTour) {
+            ArrayList<Card> winnerHand, boolean premierTour) {
 
         TreeMap<Integer, Integer> playCard = new TreeMap<>();
         if (premierTour) {
             playCard = firstTurnExpertSystem(playableCards);
         } else {
-            int nbCardJouerLastWinner = winnerHand.size();
-            for (int i = winnerHand.size(); i < 5; i++) {
-                for (Map.Entry<Integer, Integer> card : playableCards.entrySet()) {
-                    if (card.getValue() == nbCardJouerLastWinner) {
-                        playCard.put(card.getKey(), card.getValue());
-                        break;
-                    }
+            for (Map.Entry<Integer, Integer> card : playableCards.entrySet()) {
+                if (card.getValue() <= winnerHand.size()) {
+                    playCard.put(card.getKey(), card.getValue());
+                    break;
                 }
             }
         }
+        System.out.println("playCard : " + playCard);
         return playCard;
     }
 

@@ -18,8 +18,8 @@ public enum CardValue {
     QUEEN("Q", 12),
     KING("K", 13);
 
-    final private String stringRepresentation;
-    final private int rank;
+    private final String stringRepresentation;
+    private final int rank;
 
     CardValue(String stringRepresentation, int value) {
         this.stringRepresentation = stringRepresentation;

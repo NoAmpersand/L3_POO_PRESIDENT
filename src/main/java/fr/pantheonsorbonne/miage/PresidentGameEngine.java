@@ -29,6 +29,7 @@ public abstract class PresidentGameEngine {
         }
         // Initialiser une queue avec tous les joueurs
         Queue<String> players = new LinkedList<>(this.getInitialPlayers());
+        Queue<String> playersOrdreBase = new LinkedList<>();
         // L'ordre des gagnants
         Queue<String> ordrePlayersWin = new LinkedList<>();
 
@@ -36,25 +37,29 @@ public abstract class PresidentGameEngine {
         // On le met directement dans la fin de la queue
         String firstPlayerInRound = players.poll();
         players.offer(firstPlayerInRound);
+        playersOrdreBase.offer(firstPlayerInRound);
 
         String secondPlayerInRound = players.poll();
         players.offer(secondPlayerInRound);
+        playersOrdreBase.offer(secondPlayerInRound);
 
         String thirdPlayerInRound = players.poll();
         players.offer(thirdPlayerInRound);
+        playersOrdreBase.offer(thirdPlayerInRound);
 
         String fourthPlayerInRound = players.poll();
         players.offer(fourthPlayerInRound);
+        playersOrdreBase.offer(fourthPlayerInRound);
 
         // Boucle while il reste + d'un joueur
         while (players.size() > 1) {
-            players = playRound(players, ordrePlayersWin);
+            players = playRound(players, ordrePlayersWin, playersOrdreBase);
         }
 
         String president = ordrePlayersWin.poll();
         String vicePresident = ordrePlayersWin.poll();
         String viceTrouDuCul = ordrePlayersWin.poll();
-        String trouDuCul = players.poll();
+        String trouDuCul = ordrePlayersWin.poll();
 
         // send him the gameover and leave
         declareWinner(president);
@@ -90,62 +95,82 @@ public abstract class PresidentGameEngine {
 
     private void endTurnFiller(HashMap<String, Boolean> endTurn, Queue<String> players) {
         for (String player : players) {
-            endTurn.put(player, true);
+            endTurn.put(player, false);
         }
     }
 
-    private void playerHandFiller(Queue<String> players, ArrayList<Card> winnerHand,
-            HashMap<Integer, Integer> playerHand, String namePlayer, HashMap<String, Boolean> endTurn) {
-        boolean passTour = false;
-        for (Map.Entry<Integer, Integer> cardValue : playerHand.entrySet()) {
-            if (cardValue.getKey() >= winnerHand.get(0).valueToInt() && !winnerHand.isEmpty()) {
-                players.remove();
-                players.add(namePlayer);
-                passTour = true;
+    private Queue<String> upgateQueueForNextRound(Queue<String> ordrePlayerBase, Queue<String> players,
+            Queue<String> ordrePlayersWin, String winnerTemp) {
+        String playerEtudier;
+        while (true) {
+            playerEtudier = ordrePlayerBase.poll();
+            ordrePlayerBase.offer(playerEtudier);
+            if (Objects.equals(playerEtudier, winnerTemp)) {
                 break;
             }
         }
-        if (!passTour) {
-            endTurn.put(namePlayer, false);
-            players.remove();
+        Queue<String> newPlayers = new LinkedList<>();
+        if (players.peek() != null) {
+            newPlayers.add(players.peek());
         }
+        for (String playerAjout : ordrePlayerBase) {
+            if (Objects.equals(playerAjout, players.peek())) {
+                break;
+            }
+            if (!ordrePlayersWin.contains(playerAjout) && !Objects.equals(newPlayers.peek(), playerAjout)) {
+                newPlayers.add(playerAjout);
+            }
+        }
+        HashMap<Integer, Integer> playerHandFirstNewPlayers = getPlayerMapCard(newPlayers.peek());
+        if(playerHandFirstNewPlayers.isEmpty()){
+            newPlayers.remove();
+        }
+        return newPlayers;
     }
 
-    protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin) {
+    protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin,
+            Queue<String> ordrePlayerBase) {
         HashMap<String, Boolean> endTurn = new HashMap<>();
         endTurnFiller(endTurn, players);
         boolean allEndTurn = false;
-        int turnPassCount = 0;
         ArrayList<Card> winnerHand = new ArrayList<>();
         String winnerTemp = "";
         String namePlayer;
         while (!allEndTurn) {
             namePlayer = players.poll();
-            if (winnerTemp.equals(namePlayer)) {
+            if (!"".equals(winnerTemp)) {
+                HashMap<Integer, Integer> playerHandWinner = getPlayerMapCard(winnerTemp);
+                if (playerHandWinner.isEmpty() && !ordrePlayersWin.contains(winnerTemp)) {
+                    ordrePlayersWin.add(winnerTemp);
+                }
+            }
+            HashMap<Integer, Integer> playerHand = getPlayerMapCard(namePlayer);
+            if (winnerTemp.equals(namePlayer) || playerHand.isEmpty()) {
                 break;
             }
             ArrayList<Card> playerCards = getCardOrGameOver(winnerHand, namePlayer);
             if (playerCards.isEmpty()) {
-                HashMap<Integer, Integer> playerHand = getPlayerMapCard(namePlayer);
-                if (playerHand.isEmpty()) {
-                    ordrePlayersWin.add(namePlayer);
-                    return players;
-                }
-                playerHandFiller(players, winnerHand, playerHand, namePlayer, endTurn);
-                turnPassCount += 1;
+                endTurn.put(namePlayer, true);
             } else {
                 winnerHand = playerCards;
                 winnerTemp = namePlayer;
                 players.offer(namePlayer);
             }
-            if (allPlayerPass(endTurn) || turnPassCount == players.size() - 1) {
+            if (0 == players.size() - 1) {
                 allEndTurn = true;
             }
             System.out.println("ordre " + players);
             System.out.println("ordre winner : " + ordrePlayersWin);
             System.out.println("winner Temp " + winnerTemp);
+            System.out.println("pass turn : " + endTurn);
         }
-        return players;
+        // For Trou du Cul
+        System.out.println("player final" + players);
+        if (players.size() == 1 && ordrePlayersWin.size() == 3) {
+            ordrePlayersWin.add(players.poll());
+        }
+
+        return upgateQueueForNextRound(ordrePlayerBase, players, ordrePlayersWin, winnerTemp);
     }
 
     /**

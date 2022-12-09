@@ -169,7 +169,6 @@ public abstract class PresidentGameEngine {
         if (players.size() == 1 && ordrePlayersWin.size() == 3) {
             ordrePlayersWin.add(players.poll());
         }
-
         return upgateQueueForNextRound(ordrePlayerBase, players, ordrePlayersWin, winnerTemp);
     }
 

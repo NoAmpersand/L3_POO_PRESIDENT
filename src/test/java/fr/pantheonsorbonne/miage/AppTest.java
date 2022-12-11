@@ -277,7 +277,268 @@ class AppTest {
             }
         }
         assertTrue(identique);
+    }
 
+    @Test
+    void organiserOrdrePlayerBaseEnFonctionNextPlay(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+
+        String namePlayer = "Joueur4";
+        Queue<String> ordrePlayerBase = new LinkedList<>();
+        ordrePlayerBase.add("Joueur3");
+        ordrePlayerBase.add("Joueur4");
+        ordrePlayerBase.add("Joueur2");
+        ordrePlayerBase.add("Joueur1");
+        Queue<String> toTest = new LinkedList<>();
+        toTest.add("Joueur2");
+        toTest.add("Joueur1");
+        toTest.add("Joueur3");
+        toTest.add("Joueur4");
+
+        Queue<String> teste = new LinkedList<>();
+        teste = test1.organiserOrdrePlayerBaseEnFonctionNextPlay(namePlayer, ordrePlayerBase);
+        int tailleQueue = toTest.size();
+        boolean identique = false;
+        for (int i = 0; i < tailleQueue; i++) {
+            String elem1 = toTest.poll();
+            String elem2 = teste.poll();
+            if (elem1 == elem2) {
+                identique = true;
+            } else {
+                identique = false;
+                break;
+            }
+        }
+        assertTrue(identique);
+    }
+
+    @Test
+    void addOrdrePlayerWinIfNotAdd(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
+        ArrayList<Card> handToTest = new ArrayList<>();
+        handToTest.add(new Card(CardColor.SPADE, CardValue.FIVE));
+        handToTest.add(new Card(CardColor.DIAMOND, CardValue.FIVE));
+        handToTest.add(new Card(CardColor.CLUB, CardValue.FIVE));
+        handToTest.add(new Card(CardColor.HEART, CardValue.FIVE));
+        toTest.put("P1", handToTest);
+        test1.playerCards = toTest;
+
+
+        String winnerTemp = "P1";
+        Queue<String> ordrePlayersWin  = new LinkedList<>();
+        ordrePlayersWin.add("P1");
+        ordrePlayersWin.add("P2");
+        ordrePlayersWin.add("P3");
+        ordrePlayersWin.add("P4");
+        boolean allEndTurn = false;
+
+        test1.addOrdrePlayerWinIfNotAdd(winnerTemp,ordrePlayersWin,allEndTurn);
+
+        assertTrue(!test1.addOrdrePlayerWinIfNotAdd(winnerTemp,ordrePlayersWin,allEndTurn));
+    }
+
+    @Test
+    void shouldContainP1(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
+        ArrayList<Card> handToTest = new ArrayList<>();
+        toTest.put("P1", handToTest);
+        test1.playerCards = toTest;
+
+
+        String winnerTemp = "P1";
+        Queue<String> ordrePlayersWin  = new LinkedList<>();
+        ordrePlayersWin.add("P2");
+        ordrePlayersWin.add("P3");
+        ordrePlayersWin.add("P4");
+        boolean allEndTurn = false;
+
+        test1.addOrdrePlayerWinIfNotAdd(winnerTemp,ordrePlayersWin,allEndTurn);
+        assertTrue(ordrePlayersWin.contains("P1"));
+
+
+    }
+ 
+    @Test
+    void updateQueueForNextRound(){
+        HashSet<String> players = new HashSet<>();
+        players.add("Joueur3");
+        players.add("Joueur2");
+        players.add("Joueur1");
+        players.add("Joueur4");
+        var test1 = new LocalPresidentGame(players);
+
+        Queue<String> ordrePlayerBase = new LinkedList<>();
+        ordrePlayerBase.add("Joueur3");
+        ordrePlayerBase.add("Joueur2");
+        ordrePlayerBase.add("Joueur1");
+        ordrePlayerBase.add("Joueur4");
+        Queue<String> player = new LinkedList<>();
+        player.add("Joueur2");
+        Queue<String> ordrePlayerWin = new LinkedList<>();
+        ordrePlayerWin.add("Joueur1");
+        ordrePlayerWin.add("Joueur3");
+        String winnerTemp = "Joueur2";
+        boolean casPlayCardValTwo = false;
+        Queue<String> toTest = new LinkedList<>();
+        toTest.add("Joueur4");
+        toTest.add("Joueur2");
+
+        Queue<String> teste = new LinkedList<>();
+        teste = test1.updateQueueForNextRound(ordrePlayerBase, player, ordrePlayerWin, winnerTemp, casPlayCardValTwo);
+        int tailleQueue = toTest.size();
+        boolean identique = false;
+        for (int i = 0; i < tailleQueue; i++) {
+            String elem1 = toTest.poll();
+            String elem2 = teste.poll();
+            if (elem1 == elem2) {
+                identique = true;
+            } else {
+                identique = false;
+                break;
+            }
+        }
+        assertTrue(identique);
+
+    }
+
+    @Test
+    void updateQueueForNextRound2(){
+        HashSet<String> players = new HashSet<>();
+        players.add("Joueur3");
+        players.add("Joueur2");
+        players.add("Joueur1");
+        players.add("Joueur4");
+        var test1 = new LocalPresidentGame(players);
+
+        Queue<String> ordrePlayerBase = new LinkedList<>();
+        ordrePlayerBase.add("Joueur1");
+        ordrePlayerBase.add("Joueur2");
+        ordrePlayerBase.add("Joueur3");
+        ordrePlayerBase.add("Joueur4");
+        Queue<String> player = new LinkedList<>();
+        player.add("Joueur3");
+        Queue<String> ordrePlayerWin = new LinkedList<>();
+        ordrePlayerWin.add("Joueur1");
+        String winnerTemp = "Joueur3";
+        boolean casPlayCardValTwo = false;
+        Queue<String> toTest = new LinkedList<>();
+        toTest.add("Joueur4");
+        toTest.add("Joueur2");
+        toTest.add("Joueur3");
+
+        Queue<String> teste = new LinkedList<>();
+        teste = test1.updateQueueForNextRound(ordrePlayerBase, player, ordrePlayerWin, winnerTemp, casPlayCardValTwo);
+        int tailleQueue = toTest.size();
+        boolean identique = false;
+        for (int i = 0; i < tailleQueue; i++) {
+            String elem1 = toTest.poll();
+            String elem2 = teste.poll();
+            if (elem1 == elem2) {
+                identique = true;
+            } else {
+                identique = false;
+                break;
+            }
+        }
+        assertTrue(identique);
+
+    }
+
+    @Test
+    void updateQueueForNextRound3(){
+        HashSet<String> players = new HashSet<>();
+        players.add("Joueur3");
+        players.add("Joueur4");
+        players.add("Joueur1");
+        players.add("Joueur2");
+        var test1 = new LocalPresidentGame(players);
+
+        Queue<String> ordrePlayerBase = new LinkedList<>();
+        ordrePlayerBase.add("Joueur3");
+        ordrePlayerBase.add("Joueur4");
+        ordrePlayerBase.add("Joueur1");
+        ordrePlayerBase.add("Joueur2");
+        Queue<String> player = new LinkedList<>();
+        player.add("Joueur1");
+        player.add("Joueur2");
+        player.add("Joueur3");
+        Queue<String> ordrePlayerWin = new LinkedList<>();
+        ordrePlayerWin.add("Joueur4");
+        String winnerTemp = "Joueur4";
+        boolean casPlayCardValTwo = true;
+        Queue<String> toTest = new LinkedList<>();
+        toTest.add("Joueur1");
+        toTest.add("Joueur2");
+        toTest.add("Joueur3");
+
+        Queue<String> teste = new LinkedList<>();
+        teste = test1.updateQueueForNextRound(ordrePlayerBase, player, ordrePlayerWin, winnerTemp, casPlayCardValTwo);
+        int tailleQueue = toTest.size();
+        boolean identique = false;
+        for (int i = 0; i < tailleQueue; i++) {
+            String elem1 = toTest.poll();
+            String elem2 = teste.poll();
+            if (elem1 == elem2) {
+                identique = true;
+            } else {
+                identique = false;
+                break;
+            }
+        }
+        assertTrue(identique);
+
+    }
+
+    @Test
+    void addOrderPlayerWin(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
+        ArrayList<Card> handToTest = new ArrayList<>();
+        toTest.put("P1", handToTest);
+        test1.playerCards = toTest;
+
+        Queue<String> playersToTest  = new LinkedList<>();
+        playersToTest.add("P1");
+        playersToTest.add("P2");
+        playersToTest.add("P3");
+        playersToTest.add("P4");
+        Queue<String> ordrePlayersWin  = new LinkedList<>();
+        ordrePlayersWin.add("P2");
+        ordrePlayersWin.add("P3");
+        ordrePlayersWin.add("P4");
+        test1.addOrdrePlayerWin("P1", playersToTest, ordrePlayersWin);
+        assertTrue(playersToTest.contains("P1"));
+    }
+
+    @Test
+    void shouldntContainP1(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
+        ArrayList<Card> handToTest = new ArrayList<>();
+        handToTest.add(new Card(CardColor.SPADE, CardValue.FIVE));
+        handToTest.add(new Card(CardColor.DIAMOND, CardValue.FIVE));
+        handToTest.add(new Card(CardColor.CLUB, CardValue.FIVE));
+        handToTest.add(new Card(CardColor.HEART, CardValue.FIVE));
+        toTest.put("P1", handToTest);
+        test1.playerCards = toTest;
+
+        Queue<String> playersToTest  = new LinkedList<>();
+        playersToTest.add("P2");
+        playersToTest.add("P3");
+        playersToTest.add("P4");
+        Queue<String> ordrePlayersWin  = new LinkedList<>();
+        ordrePlayersWin.add("P2");
+        ordrePlayersWin.add("P3");
+        ordrePlayersWin.add("P4");
+        test1.addOrdrePlayerWin("P1", playersToTest, ordrePlayersWin);
+        assertTrue(playersToTest.contains("P1"));
     }
 
 }

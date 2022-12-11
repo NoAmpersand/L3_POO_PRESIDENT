@@ -88,12 +88,13 @@ public abstract class PresidentGameEngine {
         }
     }
 
-    private void organiserOrdrePlayerBaseEnFonctionNextPlay(String namePlayer, Queue<String> ordrePlayerBase) {
+    protected Queue<String> organiserOrdrePlayerBaseEnFonctionNextPlay(String namePlayer, Queue<String> ordrePlayerBase) {
         String playerEtudier;
         do {
             playerEtudier = ordrePlayerBase.poll();
             ordrePlayerBase.offer(playerEtudier);
         } while (!Objects.equals(playerEtudier, namePlayer));
+        return ordrePlayerBase;
     }
 
     protected Queue<String> falseCasPlayCardValTwo(Queue<String> ordrePlayerBase, Queue<String> players,
@@ -123,31 +124,35 @@ public abstract class PresidentGameEngine {
         return newPlayers;
     }
 
-    private Queue<String> updateQueueForNextRound(Queue<String> ordrePlayerBase, Queue<String> players,
+    protected Queue<String> updateQueueForNextRound(Queue<String> ordrePlayerBase, Queue<String> players,
             Queue<String> ordrePlayersWin, String winnerTemp, boolean casPlayCardValTwo) {
+
+        System.out.println("------------------------------------------------------");
+        System.out.println(ordrePlayerBase);
+        System.out.println(players);
+        System.out.println(ordrePlayersWin);
+        System.out.println(winnerTemp);
+        System.out.println(casPlayCardValTwo);
         HashMap<Integer, Integer> winnerHandTestEmpty = getPlayerMapCard(winnerTemp);
         Queue<String> newPlayers = new LinkedList<>();
         if (!winnerHandTestEmpty.isEmpty() || casPlayCardValTwo) {
             organiserOrdrePlayerBaseEnFonctionNextPlay(winnerTemp, ordrePlayerBase);
             if (players.peek() != null) {
                 newPlayers.add(players.peek());
+                System.out.println("c");
             }
-            System.out.println(ordrePlayerBase);
+            System.out.println("a");
         } else {
             String playerPlayNextWinner = players.poll();
             organiserOrdrePlayerBaseEnFonctionNextPlay(playerPlayNextWinner, ordrePlayerBase);
+            System.out.println("b");
         }
         updateNewPlayer(ordrePlayerBase, casPlayCardValTwo, ordrePlayersWin, newPlayers, players);
-        if (!newPlayers.isEmpty()) {
-            HashMap<Integer, Integer> playerHandFirstNewPlayers = getPlayerMapCard(newPlayers.peek());
-            if (playerHandFirstNewPlayers.isEmpty()) {
-                newPlayers.remove();
-            }
-        }
+        System.out.println(newPlayers);
         return newPlayers;
     }
 
-    private void addOrdrePlayerWin(String namePlayer, Queue<String> players, Queue<String> ordrePlayersWin) {
+    protected void addOrdrePlayerWin(String namePlayer, Queue<String> players, Queue<String> ordrePlayersWin) {
         HashMap<Integer, Integer> playerHandTestEmpty = getPlayerMapCard(namePlayer);
         if (!playerHandTestEmpty.isEmpty()) {
             players.offer(namePlayer);
@@ -158,7 +163,7 @@ public abstract class PresidentGameEngine {
         }
     }
 
-    private boolean addOrdrePlayerWinIfNotAdd(String winnerTemp,Queue<String> ordrePlayersWin, boolean allEndTurn) {
+    protected boolean addOrdrePlayerWinIfNotAdd(String winnerTemp,Queue<String> ordrePlayersWin, boolean allEndTurn) {
         HashMap<Integer, Integer> playerHandWinner = getPlayerMapCard(winnerTemp);
         if (playerHandWinner.isEmpty() && !ordrePlayersWin.contains(winnerTemp)) {
             ordrePlayersWin.add(winnerTemp);
@@ -169,6 +174,10 @@ public abstract class PresidentGameEngine {
 
     protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin,
             Queue<String> ordrePlayerBase) {
+                System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+                System.out.println(players);
+                System.out.println(ordrePlayersWin);
+                System.out.println(ordrePlayerBase);
         HashMap<String, Boolean> endTurn = new HashMap<>();
         endTurnFiller(endTurn, players);
         boolean allEndTurn = false;

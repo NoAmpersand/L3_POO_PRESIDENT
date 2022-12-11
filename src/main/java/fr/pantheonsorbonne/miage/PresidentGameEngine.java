@@ -101,13 +101,10 @@ public abstract class PresidentGameEngine {
 
     private void organiserOrdrePlayerBaseEnFonctionNextPlay(String namePlayer, Queue<String> ordrePlayerBase){
         String playerEtudier;
-        while (true) {
+        do {
             playerEtudier = ordrePlayerBase.poll();
             ordrePlayerBase.offer(playerEtudier);
-            if (Objects.equals(playerEtudier, namePlayer)) {
-                break;
-            }
-        }
+        } while (!Objects.equals(playerEtudier, namePlayer));
     }
 
     private Queue<String> updateQueueForNextRound(Queue<String> ordrePlayerBase, Queue<String> players,

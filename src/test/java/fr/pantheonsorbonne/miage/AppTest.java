@@ -538,4 +538,24 @@ class AppTest {
         test1.addOrdrePlayerWin("P1", playersToTest, ordrePlayersWin);
         assertTrue(playersToTest.contains("P1"));
     }
+
+    @Test
+    void handShouldBeSame(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+
+        int nbDeleteCard = 0;
+        ArrayList<Card> hand = new ArrayList<>();
+        hand.add(new Card(CardColor.SPADE, CardValue.FIVE));
+        hand.add(new Card(CardColor.DIAMOND, CardValue.FIVE));
+        ArrayList<Card> cardPlay = new ArrayList<>();
+        hand.add(new Card(CardColor.SPADE, CardValue.FIVE));
+        hand.add(new Card(CardColor.HEART, CardValue.FIVE));
+        String namePlayer = "P1";
+        ArrayList<Card> toTest = new ArrayList<>(hand);
+        test1.deleteCardInHand(nbDeleteCard,hand, cardPlay, "P1" );
+        assertEquals(hand, toTest);
+
+    }
+    
 }

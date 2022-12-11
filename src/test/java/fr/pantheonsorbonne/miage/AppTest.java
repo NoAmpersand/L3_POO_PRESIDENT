@@ -279,7 +279,7 @@ class AppTest {
     }
 
     @Test
-    void organiserOrdrePlayerBaseEnFonctionNextPlay(){
+    void organiserOrdrePlayerBaseEnFonctionNextPlay() {
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
 
@@ -313,7 +313,7 @@ class AppTest {
     }
 
     @Test
-    void addOrdrePlayerWinIfNotAdd(){
+    void addOrdrePlayerWinIfNotAdd() {
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
         HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
@@ -325,22 +325,21 @@ class AppTest {
         toTest.put("P1", handToTest);
         test1.playerCards = toTest;
 
-
         String winnerTemp = "P1";
-        Queue<String> ordrePlayersWin  = new LinkedList<>();
+        Queue<String> ordrePlayersWin = new LinkedList<>();
         ordrePlayersWin.add("P1");
         ordrePlayersWin.add("P2");
         ordrePlayersWin.add("P3");
         ordrePlayersWin.add("P4");
         boolean allEndTurn = false;
 
-        test1.addOrdrePlayerWinIfNotAdd(winnerTemp,ordrePlayersWin,allEndTurn);
+        test1.addOrdrePlayerWinIfNotAdd(winnerTemp, ordrePlayersWin, allEndTurn);
 
-        assertTrue(!test1.addOrdrePlayerWinIfNotAdd(winnerTemp,ordrePlayersWin,allEndTurn));
+        assertTrue(!test1.addOrdrePlayerWinIfNotAdd(winnerTemp, ordrePlayersWin, allEndTurn));
     }
 
     @Test
-    void shouldContainP1(){
+    void shouldContainP1() {
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
         HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
@@ -348,22 +347,20 @@ class AppTest {
         toTest.put("P1", handToTest);
         test1.playerCards = toTest;
 
-
         String winnerTemp = "P1";
-        Queue<String> ordrePlayersWin  = new LinkedList<>();
+        Queue<String> ordrePlayersWin = new LinkedList<>();
         ordrePlayersWin.add("P2");
         ordrePlayersWin.add("P3");
         ordrePlayersWin.add("P4");
         boolean allEndTurn = false;
 
-        test1.addOrdrePlayerWinIfNotAdd(winnerTemp,ordrePlayersWin,allEndTurn);
+        test1.addOrdrePlayerWinIfNotAdd(winnerTemp, ordrePlayersWin, allEndTurn);
         assertTrue(ordrePlayersWin.contains("P1"));
 
-
     }
- 
+
     @Test
-    void updateQueueForNextRound(){
+    void updateQueueForNextRound() {
         HashSet<String> players = new HashSet<>();
         players.add("Joueur3");
         players.add("Joueur2");
@@ -406,7 +403,7 @@ class AppTest {
     }
 
     @Test
-    void updateQueueForNextRound2(){
+    void updateQueueForNextRound2() {
         HashSet<String> players = new HashSet<>();
         players.add("Joueur3");
         players.add("Joueur2");
@@ -449,7 +446,7 @@ class AppTest {
     }
 
     @Test
-    void updateQueueForNextRound3(){
+    void updateQueueForNextRound3() {
         HashSet<String> players = new HashSet<>();
         players.add("Joueur3");
         players.add("Joueur4");
@@ -493,7 +490,7 @@ class AppTest {
     }
 
     @Test
-    void addOrderPlayerWin(){
+    void addOrderPlayerWin() {
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
         HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
@@ -501,12 +498,12 @@ class AppTest {
         toTest.put("P1", handToTest);
         test1.playerCards = toTest;
 
-        Queue<String> playersToTest  = new LinkedList<>();
+        Queue<String> playersToTest = new LinkedList<>();
         playersToTest.add("P1");
         playersToTest.add("P2");
         playersToTest.add("P3");
         playersToTest.add("P4");
-        Queue<String> ordrePlayersWin  = new LinkedList<>();
+        Queue<String> ordrePlayersWin = new LinkedList<>();
         ordrePlayersWin.add("P2");
         ordrePlayersWin.add("P3");
         ordrePlayersWin.add("P4");
@@ -515,7 +512,7 @@ class AppTest {
     }
 
     @Test
-    void shouldntContainP1(){
+    void shouldntContainP1() {
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
         HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
@@ -527,11 +524,11 @@ class AppTest {
         toTest.put("P1", handToTest);
         test1.playerCards = toTest;
 
-        Queue<String> playersToTest  = new LinkedList<>();
+        Queue<String> playersToTest = new LinkedList<>();
         playersToTest.add("P2");
         playersToTest.add("P3");
         playersToTest.add("P4");
-        Queue<String> ordrePlayersWin  = new LinkedList<>();
+        Queue<String> ordrePlayersWin = new LinkedList<>();
         ordrePlayersWin.add("P2");
         ordrePlayersWin.add("P3");
         ordrePlayersWin.add("P4");
@@ -540,7 +537,7 @@ class AppTest {
     }
 
     @Test
-    void handShouldBeSame(){
+    void handShouldBeSame() {
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
 
@@ -551,11 +548,28 @@ class AppTest {
         ArrayList<Card> cardPlay = new ArrayList<>();
         hand.add(new Card(CardColor.SPADE, CardValue.FIVE));
         hand.add(new Card(CardColor.HEART, CardValue.FIVE));
-        String namePlayer = "P1";
         ArrayList<Card> toTest = new ArrayList<>(hand);
-        test1.deleteCardInHand(nbDeleteCard,hand, cardPlay, "P1" );
+        test1.deleteCardInHand(nbDeleteCard, hand, cardPlay);
         assertEquals(hand, toTest);
-
     }
-    
+
+    @Test
+    void getCardOrGameOver(){
+        HashSet<String> players = new HashSet<>();
+        players.add("Joueur3");
+        players.add("Joueur4");
+        players.add("Joueur1");
+        players.add("Joueur2");
+        var test1 = new LocalPresidentGame(players);
+
+        String namePlayer = "Joueur2";
+        ArrayList<Card> winnerHand = new ArrayList<>();
+        ArrayList<Card> toTest= new ArrayList<>();
+
+        ArrayList<Card> teste = new ArrayList<>();
+        teste = test1.getCardOrGameOver(winnerHand, namePlayer);
+        System.out.println("blabala"+ teste);
+        assertEquals(teste, toTest);
+    }
+
 }

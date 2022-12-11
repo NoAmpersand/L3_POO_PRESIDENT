@@ -87,10 +87,9 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
     }
 
-    protected void deleteCardInHand(int nbDeleteCard, ArrayList<Card> hand, ArrayList<Card> cardPlay,
-            String namePlayer) {
+    protected ArrayList<Card> deleteCardInHand(int nbDeleteCard, ArrayList<Card> hand, ArrayList<Card> cardPlay) {
         if (nbDeleteCard == 0) {
-            return;
+            return hand;
         }
         for (int i = 0; i < nbDeleteCard; i++) {
             for (Card card : hand) {
@@ -100,28 +99,23 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
         }
-        Collections.copy(this.playerCards.get(namePlayer), hand);
+        return hand;
     }
 
     @Override
     // Cette méthode prends les cartes du dernier gagnant et les cartes du joueur et
     // le joueur renvoie une ou plusieurs cartes adéquates
     protected ArrayList<Card> getCardOrGameOver(ArrayList<Card> winnerHand, String namePlayer) {
-        System.out.println("--------------------------------");
-        System.out.println("joueur play " + namePlayer);
         boolean premierTour = winnerHand.isEmpty();
         ArrayList<Card> hand = this.playerCards.get(namePlayer);
-        System.out.println("main joueur : " + hand);
         Map<Integer, Integer> mapHand = new HashMap<>();
         fillHand(mapHand, hand);
         HashMap<Integer, Integer> playableCards = new HashMap<>();
         fillPlayableCards(playableCards, mapHand, winnerHand, premierTour);
-        System.out.println("carte jouable : " + playableCards);
         TreeMap<Integer, Integer> mapPlay = expertSystem(playableCards, winnerHand, premierTour);
         ArrayList<Card> cardPlay = new ArrayList<>();
         int nbDeleteCard = 0;
         int index = 0;
-        System.out.println(mapPlay.firstEntry());
         if (mapPlay.firstEntry() != null) {
             for (Card card : hand) {
                 if (nbDeleteCard >= mapPlay.firstEntry().getValue()) {
@@ -135,10 +129,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 index += 1;
             }
         }
-        System.out.println(cardPlay);
-        deleteCardInHand(nbDeleteCard, hand, cardPlay, namePlayer);
-
-        System.out.println("hand retirer " + hand);
+        deleteCardInHand(nbDeleteCard, hand, cardPlay);
         return cardPlay;
     }
 
@@ -156,7 +147,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
         }
-        System.out.println("playCard : " + playCard);
         return playCard;
     }
 

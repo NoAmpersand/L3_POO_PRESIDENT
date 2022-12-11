@@ -572,4 +572,25 @@ class AppTest {
         assertEquals(teste, toTest);
     }
 
+    @Test
+    void playerRole(){
+        HashSet<String> players = new HashSet<>();
+        players.add("Joueur3");
+        players.add("Joueur4");
+        players.add("Joueur1");
+        players.add("Joueur2");
+        var test1 = new LocalPresidentGame(players);
+
+        ArrayList<String> test = new ArrayList<>();
+        test = test1.play();
+
+        boolean playerNotNull = true;
+
+        for(String player : test){
+            if(player == null){
+                playerNotNull = false;
+            }
+        }
+        assertTrue(playerNotNull);
+    }
 }

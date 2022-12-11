@@ -5,8 +5,6 @@ import fr.pantheonsorbonne.miage.game.Deck;
 
 import java.util.*;
 
-import org.apache.camel.component.properties.SysPropertiesFunction;
-
 
 /**
  * this class is a abstract version of the engine, to be used locally on through
@@ -19,7 +17,7 @@ public abstract class PresidentGameEngine {
     /**
      * play a war game wit the provided players
      */
-    public void play() {
+    public ArrayList<String> play() {
         // On initialise la main pour chaque joueur
         for (String playerName : getInitialPlayers()) {
             // On prend des cartes aléatoires
@@ -63,13 +61,19 @@ public abstract class PresidentGameEngine {
         String viceTrouDuCul = ordrePlayersWin.poll();
         String trouDuCul = ordrePlayersWin.poll();
 
+        ArrayList<String> roles = new ArrayList<>();
+        roles.add(president);
+        roles.add(vicePresident);
+        roles.add(viceTrouDuCul);
+        roles.add(trouDuCul);
+
         // send him the gameover and leave
         declareWinner(president);
         System.out.println(president + " won! bye");
         System.out.println("vice Président : " + vicePresident);
         System.out.println("vice Trou du Cul : " + viceTrouDuCul);
         System.out.println("Trou du Cul : " + trouDuCul);
-        System.exit(0);
+        return roles;
     }
 
     protected abstract Set<String> getInitialPlayers();
@@ -126,26 +130,16 @@ public abstract class PresidentGameEngine {
 
     protected Queue<String> updateQueueForNextRound(Queue<String> ordrePlayerBase, Queue<String> players,
             Queue<String> ordrePlayersWin, String winnerTemp, boolean casPlayCardValTwo) {
-
-        System.out.println("------------------------------------------------------");
-        System.out.println(ordrePlayerBase);
-        System.out.println(players);
-        System.out.println(ordrePlayersWin);
-        System.out.println(winnerTemp);
-        System.out.println(casPlayCardValTwo);
         HashMap<Integer, Integer> winnerHandTestEmpty = getPlayerMapCard(winnerTemp);
         Queue<String> newPlayers = new LinkedList<>();
         if (!winnerHandTestEmpty.isEmpty() || casPlayCardValTwo) {
             organiserOrdrePlayerBaseEnFonctionNextPlay(winnerTemp, ordrePlayerBase);
             if (players.peek() != null) {
                 newPlayers.add(players.peek());
-                System.out.println("c");
             }
-            System.out.println("a");
         } else {
             String playerPlayNextWinner = players.poll();
             organiserOrdrePlayerBaseEnFonctionNextPlay(playerPlayNextWinner, ordrePlayerBase);
-            System.out.println("b");
         }
         updateNewPlayer(ordrePlayerBase, casPlayCardValTwo, ordrePlayersWin, newPlayers, players);
         System.out.println(newPlayers);
@@ -174,7 +168,6 @@ public abstract class PresidentGameEngine {
 
     protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin,
             Queue<String> ordrePlayerBase) {
-                System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
                 System.out.println(players);
                 System.out.println(ordrePlayersWin);
                 System.out.println(ordrePlayerBase);

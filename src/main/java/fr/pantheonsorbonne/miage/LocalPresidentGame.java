@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class LocalPresidentGame extends PresidentGameEngine {
 
     private final Set<String> initialPlayers;
-    final Map<String, ArrayList<Card>> playerCards = new HashMap<>();
+    Map<String, ArrayList<Card>> playerCards = new HashMap<>();
 
     public LocalPresidentGame(Set<String> initialPlayers) {
         this.initialPlayers = initialPlayers;

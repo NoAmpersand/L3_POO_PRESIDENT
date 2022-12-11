@@ -119,5 +119,19 @@ class AppTest
         assertTrue(result2);
 
     }
+
+   @Test
+    void shouldReturnPlayerCard(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+
+        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
+        ArrayList<Card> handToTest = new ArrayList<>();
+        handToTest.add(new Card(CardColor.SPADE, CardValue.FIVE));
+        toTest.put("P1", handToTest);
+        test1.playerCards = toTest;
+
+        assertEquals(handToTest, test1.getPlayerCards("P1"));
+    }
     }
 

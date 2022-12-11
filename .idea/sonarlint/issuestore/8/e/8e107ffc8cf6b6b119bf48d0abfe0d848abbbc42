@@ -1,7 +1,0 @@
-
-=
-java:S2189""Add an end condition to this loop.(˜ïˆžÿÿÿÿÿ
-t	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(¿Ï³Ÿüÿÿÿÿ
-9
-java:S2119"Save and re-use this "Random".(¿Ï³Ÿüÿÿÿÿ
-7	java:S131""Add a default case to this switch.(…ÇÒ»

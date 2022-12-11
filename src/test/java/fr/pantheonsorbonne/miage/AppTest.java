@@ -60,6 +60,21 @@ class AppTest
 
         assertEquals("J1", test1.fetchQofH());
     }
+
+    @Test
+    void handShouldBeFilled(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        Map<Integer, Integer> handToFill = new HashMap<>();
+        ArrayList<Card> hand = new ArrayList<>();
+        hand.add(new Card(CardColor.HEART, CardValue.QUEEN));
+        hand.add(new Card(CardColor.HEART, CardValue.QUEEN));
+        test1.fillHand(handToFill, hand);
+
+        assertEquals(2, handToFill.get(11));
+
+    }
+
     }
 
 

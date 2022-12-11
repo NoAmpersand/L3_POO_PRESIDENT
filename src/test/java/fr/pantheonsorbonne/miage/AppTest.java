@@ -93,5 +93,32 @@ class AppTest
 
     }
 
+   @Test
+    void mapShouldBeFilled(){
+       HashSet<String> players = new HashSet<>();
+       var test1 = new LocalPresidentGame(players);
+       HashMap<Integer, Integer> playableCards = new HashMap<>();
+       playableCards.put(12, 1);
+       Map<Integer, Integer> mapHand = new HashMap<>();
+       mapHand.put(12, 1);
+       mapHand.put(2, 1);
+       ArrayList<Card> winnerHand = new ArrayList<>();
+       winnerHand.add(new Card(CardColor.SPADE, CardValue.THREE));
+       boolean firstTurn = true;
+       Map<Integer, Integer> shouldMatch = new HashMap<>();
+       test1.fillPlayableCards(playableCards, mapHand, winnerHand, firstTurn);
+       shouldMatch.put(12,2);
+       shouldMatch.put(2,1);
+       boolean result = shouldMatch.equals(playableCards);
+       assertTrue(result);
+
+       HashMap<Integer, Integer> secondPlayableCards = new HashMap<>();
+       firstTurn = false;
+       test1.fillPlayableCards(secondPlayableCards, mapHand, winnerHand, firstTurn);
+       boolean result2 = mapHand.equals(secondPlayableCards);
+        assertTrue(result2);
+
+    }
+
     }
 

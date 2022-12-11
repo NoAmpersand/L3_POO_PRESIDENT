@@ -107,7 +107,7 @@ public abstract class PresidentGameEngine {
         return newPlayers;
     }
 
-    private void updateNewPlayer(Queue<String> ordrePlayerBase, boolean casPlayCardValTwo,
+    protected Queue<String> updateNewPlayer(Queue<String> ordrePlayerBase, boolean casPlayCardValTwo,
             Queue<String> ordrePlayersWin, Queue<String> newPlayers, Queue<String> players) {
         if (!casPlayCardValTwo) {
             falseCasPlayCardValTwo(ordrePlayerBase, players, ordrePlayersWin, newPlayers);
@@ -118,6 +118,7 @@ public abstract class PresidentGameEngine {
                 }
             }
         }
+        return newPlayers;
     }
 
     private Queue<String> updateQueueForNextRound(Queue<String> ordrePlayerBase, Queue<String> players,

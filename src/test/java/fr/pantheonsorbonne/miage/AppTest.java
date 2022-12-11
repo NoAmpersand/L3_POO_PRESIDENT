@@ -1,15 +1,14 @@
 
 package fr.pantheonsorbonne.miage;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import fr.pantheonsorbonne.miage.enums.CardColor;
 import fr.pantheonsorbonne.miage.enums.CardValue;
 import fr.pantheonsorbonne.miage.game.Card;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test for simple App.
@@ -491,7 +490,6 @@ class AppTest {
             }
         }
         assertTrue(identique);
-
     }
 
     @Test
@@ -540,5 +538,4 @@ class AppTest {
         test1.addOrdrePlayerWin("P1", playersToTest, ordrePlayersWin);
         assertTrue(playersToTest.contains("P1"));
     }
-
 }

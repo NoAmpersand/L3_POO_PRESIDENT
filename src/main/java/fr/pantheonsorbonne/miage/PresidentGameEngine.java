@@ -5,7 +5,6 @@ import fr.pantheonsorbonne.miage.game.Deck;
 
 import java.util.*;
 
-
 /**
  * this class is a abstract version of the engine, to be used locally on through
  * the network
@@ -92,7 +91,8 @@ public abstract class PresidentGameEngine {
         }
     }
 
-    protected Queue<String> organiserOrdrePlayerBaseEnFonctionNextPlay(String namePlayer, Queue<String> ordrePlayerBase) {
+    protected Queue<String> organiserOrdrePlayerBaseEnFonctionNextPlay(String namePlayer,
+            Queue<String> ordrePlayerBase) {
         String playerEtudier;
         do {
             playerEtudier = ordrePlayerBase.poll();
@@ -142,7 +142,6 @@ public abstract class PresidentGameEngine {
             organiserOrdrePlayerBaseEnFonctionNextPlay(playerPlayNextWinner, ordrePlayerBase);
         }
         updateNewPlayer(ordrePlayerBase, casPlayCardValTwo, ordrePlayersWin, newPlayers, players);
-        System.out.println(newPlayers);
         return newPlayers;
     }
 
@@ -157,7 +156,7 @@ public abstract class PresidentGameEngine {
         }
     }
 
-    protected boolean addOrdrePlayerWinIfNotAdd(String winnerTemp,Queue<String> ordrePlayersWin, boolean allEndTurn) {
+    protected boolean addOrdrePlayerWinIfNotAdd(String winnerTemp, Queue<String> ordrePlayersWin, boolean allEndTurn) {
         HashMap<Integer, Integer> playerHandWinner = getPlayerMapCard(winnerTemp);
         if (playerHandWinner.isEmpty() && !ordrePlayersWin.contains(winnerTemp)) {
             ordrePlayersWin.add(winnerTemp);
@@ -168,9 +167,6 @@ public abstract class PresidentGameEngine {
 
     protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin,
             Queue<String> ordrePlayerBase) {
-                System.out.println(players);
-                System.out.println(ordrePlayersWin);
-                System.out.println(ordrePlayerBase);
         HashMap<String, Boolean> endTurn = new HashMap<>();
         endTurnFiller(endTurn, players);
         boolean allEndTurn = false;

@@ -5,6 +5,8 @@ import fr.pantheonsorbonne.miage.game.Deck;
 
 import java.util.*;
 
+import org.apache.camel.component.properties.SysPropertiesFunction;
+
 
 /**
  * this class is a abstract version of the engine, to be used locally on through

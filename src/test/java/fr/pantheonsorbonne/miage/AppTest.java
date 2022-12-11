@@ -240,4 +240,44 @@ class AppTest {
 
     }
 
+    @Test
+    void updateNewPlayer2() {
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+
+        Queue<String> ordrePlayerBase = new LinkedList<>();
+        ordrePlayerBase.add("Joueur4");
+        ordrePlayerBase.add("Joueur3");
+        ordrePlayerBase.add("Joueur2");
+        ordrePlayerBase.add("Joueur1");
+        boolean casPlayCardValTwo = true;
+        Queue<String> ordrePlayerWin = new LinkedList<>();
+        Queue<String> player = new LinkedList<>();
+        player.add("Joueur4");
+        Queue<String> newPlayer = new LinkedList<>();
+        newPlayer.add("Joueur4");
+        Queue<String> toTest = new LinkedList<>();
+        toTest.add("Joueur4");
+        toTest.add("Joueur3");
+        toTest.add("Joueur2");
+        toTest.add("Joueur1");
+
+        Queue<String> teste = new LinkedList<>();
+        teste = test1.updateNewPlayer(ordrePlayerBase, casPlayCardValTwo, ordrePlayerWin, newPlayer, player);
+        int tailleQueue = toTest.size();
+        boolean identique = false;
+        for (int i = 0; i < tailleQueue; i++) {
+            String elem1 = toTest.poll();
+            String elem2 = teste.poll();
+            if (elem1 == elem2) {
+                identique = true;
+            } else {
+                identique = false;
+                break;
+            }
+        }
+        assertTrue(identique);
+
+    }
+
 }

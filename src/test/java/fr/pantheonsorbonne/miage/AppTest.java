@@ -8,26 +8,44 @@ import fr.pantheonsorbonne.miage.enums.CardValue;
 import fr.pantheonsorbonne.miage.game.Card;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 
 
 /**
  * Unit test for simple App.
  */
-public class AppTest 
+class AppTest
 {
     /**
      * Rigorous Test :-)
      */
     @Test
-    public void shouldAnswerWithTrue()
+    void shouldAnswerWithTrue()
     {
         assertTrue( true );
     }
 
     @Test
-    public void fetchQofH(){
+    void getInitialPlayers(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        assertEquals(players, test1.getInitialPlayers());
+    }
+
+    @Test
+    void giveCardsToPlayer() {
+        HashSet<String> players = new HashSet<>();
+        players.add("J1");
+        var test1 = new LocalPresidentGame(players);
+        ArrayList<Card> cardJ1 = new ArrayList<>();
+        cardJ1.add(Card.valueOf("QH"));
+        test1.playerCards.put("J1", cardJ1);
+        test1.giveCardsToPlayer("J1","QH");
+        boolean result= !cardJ1.isEmpty();
+        assertTrue(result);
+    }
+    @Test
+    void fetchQofH(){
         HashSet<String> players = new HashSet<>();
         players.add("P1");
         players.add("P2");
@@ -42,4 +60,8 @@ public class AppTest
 
         assertEquals("J1", test1.fetchQofH());
     }
-}
+    }
+
+
+
+

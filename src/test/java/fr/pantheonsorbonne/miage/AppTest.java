@@ -566,7 +566,6 @@ class AppTest {
 
         ArrayList<Card> teste;
         teste = test1.getCardOrGameOver(winnerHand, namePlayer);
-        System.out.println("blabala"+ teste);
         assertEquals(teste, toTest);
     }
 
@@ -580,7 +579,7 @@ class AppTest {
         var test1 = new LocalPresidentGame(players);
 
         ArrayList<String> test;
-        test = test1.play();
+        test = (ArrayList<String>) test1.play();
 
         boolean playerNotNull = true;
 

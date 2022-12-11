@@ -1,6 +1,8 @@
 package fr.pantheonsorbonne.miage;
 
 import fr.pantheonsorbonne.miage.game.Card;
+
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -87,9 +89,9 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
     }
 
-    protected ArrayList<Card> deleteCardInHand(int nbDeleteCard, ArrayList<Card> hand, ArrayList<Card> cardPlay) {
+    protected void deleteCardInHand(int nbDeleteCard, ArrayList<Card> hand, ArrayList<Card> cardPlay) {
         if (nbDeleteCard == 0) {
-            return hand;
+            return;
         }
         for (int i = 0; i < nbDeleteCard; i++) {
             for (Card card : hand) {
@@ -99,7 +101,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
         }
-        return hand;
     }
 
     @Override
@@ -174,10 +175,10 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     protected String fetchQofH() {
         String specialPlayer = "";
-        for (String player : playerCards.keySet()) {
-            for (Card card : playerCards.get(player)) {
-                if (card.verifQofH()) {
-                    specialPlayer = player;
+        for(Map.Entry<String, ArrayList<Card>> playersCards : playerCards.entrySet()){
+            for(Card card : playersCards.getValue()){
+                if(card.verifQofH()){
+                    specialPlayer = playersCards.getKey();
                 }
             }
         }

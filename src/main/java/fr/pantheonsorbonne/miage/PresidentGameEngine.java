@@ -33,11 +33,14 @@ public abstract class PresidentGameEngine {
         // L'ordre des gagnants
         Queue<String> ordrePlayersWin = new LinkedList<>();
 
-        // On ajoute le i-ième player dans la queue
-        // On le met directement dans la fin de la queue
-        String firstPlayerInRound = players.poll();
-        players.offer(firstPlayerInRound);
-        playersOrdreBase.offer(firstPlayerInRound);
+        for(String item : players){
+            if(item.equals(fetchQofH())){
+                String firstPlayerInRound = players.poll();
+                players.offer(firstPlayerInRound);
+                playersOrdreBase.offer(firstPlayerInRound);
+                break;
+            }
+        }
 
         String secondPlayerInRound = players.poll();
         players.offer(secondPlayerInRound);
@@ -230,4 +233,6 @@ public abstract class PresidentGameEngine {
     protected abstract void giveCardsToPlayer(Collection<Card> cards, String playerName);
 
     protected abstract HashMap<Integer, Integer> getPlayerMapCard(String playerName);
+
 }
+

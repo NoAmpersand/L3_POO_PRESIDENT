@@ -93,7 +93,7 @@ public abstract class PresidentGameEngine {
         return endTurnCounter + 1 == remainingPlayersInTurn;
     }
 
-    public void endTurnFiller(Map<String, Boolean> endTurn, Queue<String> players) {
+    private void endTurnFiller(HashMap<String, Boolean> endTurn, Queue<String> players) {
         for (String player : players) {
             endTurn.put(player, false);
         }
@@ -102,7 +102,7 @@ public abstract class PresidentGameEngine {
     private Queue<String> updateQueueForNextRound(Queue<String> ordrePlayerBase, Queue<String> players,
                                                   Queue<String> ordrePlayersWin, String winnerTemp) {
         String playerEtudier;
-        while(true) {
+        while (true) {
             playerEtudier = ordrePlayerBase.poll();
             ordrePlayerBase.offer(playerEtudier);
             if (Objects.equals(playerEtudier, winnerTemp)) {

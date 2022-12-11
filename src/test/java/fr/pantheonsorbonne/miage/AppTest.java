@@ -74,24 +74,6 @@ class AppTest
         assertEquals(2, handToFill.get(11));
 
     }
-    @Test
-    void allShouldBeFalse(){
-        HashSet<String> players = new HashSet<>();
-        var test1 = new LocalPresidentGame(players);
-
-        Queue<String> playersTest = new LinkedList<>();
-        playersTest.add("P1");
-        playersTest.add("P2");
-        HashMap<String, Boolean> endTurn = new HashMap<>();
-        test1.endTurnFiller(endTurn, playersTest);
-        Map<String, Boolean> shouldMatch = new HashMap<>();
-        shouldMatch.put("P1", false);
-        shouldMatch.put("P2", false);
-        boolean result = shouldMatch.equals(endTurn);
-
-        assertTrue(result);
-
-    }
 
     }
 

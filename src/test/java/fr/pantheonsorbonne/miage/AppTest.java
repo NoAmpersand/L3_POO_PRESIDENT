@@ -280,4 +280,53 @@ class AppTest {
 
     }
 
+    @Test
+    void addOrdrePlayerWinIfNotAdd(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
+        ArrayList<Card> handToTest = new ArrayList<>();
+        handToTest.add(new Card(CardColor.SPADE, CardValue.FIVE));
+        handToTest.add(new Card(CardColor.DIAMOND, CardValue.FIVE));
+        handToTest.add(new Card(CardColor.CLUB, CardValue.FIVE));
+        handToTest.add(new Card(CardColor.HEART, CardValue.FIVE));
+        toTest.put("P1", handToTest);
+        test1.playerCards = toTest;
+
+
+        String winnerTemp = "P1";
+        Queue<String> ordrePlayersWin  = new LinkedList<>();
+        ordrePlayersWin.add("P1");
+        ordrePlayersWin.add("P2");
+        ordrePlayersWin.add("P3");
+        ordrePlayersWin.add("P4");
+        boolean allEndTurn = false;
+
+        test1.addOrdrePlayerWinIfNotAdd(winnerTemp,ordrePlayersWin,allEndTurn);
+
+        assertTrue(!test1.addOrdrePlayerWinIfNotAdd(winnerTemp,ordrePlayersWin,allEndTurn));
+    }
+
+    @Test
+    void shouldContainP1(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
+        ArrayList<Card> handToTest = new ArrayList<>();
+        toTest.put("P1", handToTest);
+        test1.playerCards = toTest;
+
+
+        String winnerTemp = "P1";
+        Queue<String> ordrePlayersWin  = new LinkedList<>();
+        ordrePlayersWin.add("P2");
+        ordrePlayersWin.add("P3");
+        ordrePlayersWin.add("P4");
+        boolean allEndTurn = false;
+
+        test1.addOrdrePlayerWinIfNotAdd(winnerTemp,ordrePlayersWin,allEndTurn);
+        assertTrue(ordrePlayersWin.contains("P1"));
+
+
+    }
 }

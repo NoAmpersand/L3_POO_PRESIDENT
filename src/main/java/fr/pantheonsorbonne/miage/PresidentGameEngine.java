@@ -158,7 +158,7 @@ public abstract class PresidentGameEngine {
         }
     }
 
-    private boolean addOrdrePlayerWinIfNotAdd(String winnerTemp,Queue<String> ordrePlayersWin, boolean allEndTurn) {
+    protected boolean addOrdrePlayerWinIfNotAdd(String winnerTemp,Queue<String> ordrePlayersWin, boolean allEndTurn) {
         HashMap<Integer, Integer> playerHandWinner = getPlayerMapCard(winnerTemp);
         if (playerHandWinner.isEmpty() && !ordrePlayersWin.contains(winnerTemp)) {
             ordrePlayersWin.add(winnerTemp);

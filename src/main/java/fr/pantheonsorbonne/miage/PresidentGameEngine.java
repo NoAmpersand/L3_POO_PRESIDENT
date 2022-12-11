@@ -35,10 +35,14 @@ public abstract class PresidentGameEngine {
 
         // On ajoute le i-ième player dans la queue
         // On le met directement dans la fin de la queue
-        String firstPlayerInRound = players.poll();
-        players.offer(firstPlayerInRound);
-        playersOrdreBase.offer(firstPlayerInRound);
-
+        for(String item : players){
+            if(item.equals(fetchQofH())){
+                String firstPlayerInRound = players.poll();
+                players.offer(firstPlayerInRound);
+                playersOrdreBase.offer(firstPlayerInRound);
+                break;
+            }
+        }
         String secondPlayerInRound = players.poll();
         players.offer(secondPlayerInRound);
         playersOrdreBase.offer(secondPlayerInRound);
@@ -86,6 +90,8 @@ public abstract class PresidentGameEngine {
      * @param hand       the cards as a string (to be converted later)
      */
     protected abstract void giveCardsToPlayer(String playerName, String hand);
+
+
 
     void endTurnFiller(HashMap<String, Boolean> endTurn, Queue<String> players) {
         for (String player : players) {

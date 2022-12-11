@@ -29,8 +29,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     /**
      * Cette methode est la méthode qui lance le jeu
-     * 
-     * @param args
+     *
      */
     public static void main(String... args) {
         LocalPresidentGame localWarGame = new LocalPresidentGame(Set.of("Joueur1", "Joueur2", "Joueur3", "Joueur4"));
@@ -39,7 +38,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    /**
+    /*
      * Getter d'initialPlayer
      */
     protected Set<String> getInitialPlayers() {
@@ -47,7 +46,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    /**
+    /*
      * Cette méthode donne des cartes à un joueur
      * 
      * @param playerName String nom du joueur
@@ -59,7 +58,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    /**
+    /*
      * Cette methode permet d'effecter un round(un pli)
      * 
      * @param players Queue<String> ordre des joueurs
@@ -83,7 +82,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    /**
+    /*
      * Cette méthode declare le gagnant de la game
      * 
      * @param winner String nom du joueur gagnant
@@ -142,17 +141,15 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     /**
      * Cette methode supprime de la main du joueur les cartes qui ont été joué
-     * 
+     *
      * @param nbDeleteCard int le nombre de carte qui doit etre suprimmer de la main
      *                     du joueur
      * @param hand         ArrayList<Card> la main du joueur
      * @param cardPlay     ArrayList<Card> les cartes qui ont été joué par le joueur
-     * @return ArrayList<Card> la main du joueur apres suppression des cartes qui
-     *         ont été joué
      */
-    protected ArrayList<Card> deleteCardInHand(int nbDeleteCard, ArrayList<Card> hand, ArrayList<Card> cardPlay) {
+    protected void deleteCardInHand(int nbDeleteCard, ArrayList<Card> hand, ArrayList<Card> cardPlay) {
         if (nbDeleteCard == 0) {
-            return hand;
+            return;
         }
         for (int i = 0; i < nbDeleteCard; i++) {
             for (Card card : hand) {
@@ -162,14 +159,13 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
         }
-        return hand;
     }
 
     @Override
-    /**
+    /*
      * Cette méthode prends les cartes du dernier gagnant et les cartes du joueur et
      * le joueur renvoie une ou plusieurs cartes adéquates
-     * 
+     *
      * @param winnerHand ArrayList<Card> les cartes du dernier joueur qui est
      *                   entrain de gangner la round
      * @param namePlayer Sting nom du joueur qui doit jouer une carte
@@ -258,9 +254,9 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    /**
+    /*
      * Cette methode donne les cartes à un joueurs
-     * 
+     *
      * @param card   Collection<Card> les cartes qui vont etre donné au joueur
      * @param player String le joueur qui va recevoir les cartes
      */

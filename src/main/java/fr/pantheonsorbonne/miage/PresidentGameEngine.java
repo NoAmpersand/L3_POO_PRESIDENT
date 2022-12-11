@@ -1,3 +1,4 @@
+
 package fr.pantheonsorbonne.miage;
 
 import fr.pantheonsorbonne.miage.game.Card;
@@ -16,7 +17,7 @@ public abstract class PresidentGameEngine {
     /**
      * play a war game wit the provided players
      */
-    public ArrayList<String> play() {
+    public List<String> play() {
         // On initialise la main pour chaque joueur
         for (String playerName : getInitialPlayers()) {
             // On prend des cartes aléatoires
@@ -66,7 +67,6 @@ public abstract class PresidentGameEngine {
         roles.add(viceTrouDuCul);
         roles.add(trouDuCul);
 
-        // send him the gameover and leave
         declareWinner(president);
         System.out.println(president + " won! bye");
         System.out.println("vice Président : " + vicePresident);
@@ -176,6 +176,7 @@ public abstract class PresidentGameEngine {
         String namePlayer;
         while (!allEndTurn) {
             namePlayer = players.poll();
+            assert winnerTemp != null;
             if (winnerTemp.equals(namePlayer)) {
                 break;
             }

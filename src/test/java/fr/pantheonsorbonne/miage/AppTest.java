@@ -1,4 +1,3 @@
-
 package fr.pantheonsorbonne.miage;
 
 import fr.pantheonsorbonne.miage.enums.CardColor;
@@ -103,17 +102,15 @@ class AppTest {
         mapHand.put(2, 1);
         ArrayList<Card> winnerHand = new ArrayList<>();
         winnerHand.add(new Card(CardColor.SPADE, CardValue.THREE));
-        boolean firstTurn = true;
         Map<Integer, Integer> shouldMatch = new HashMap<>();
-        test1.fillPlayableCards(playableCards, mapHand, winnerHand, firstTurn);
+        test1.fillPlayableCards(playableCards, mapHand, winnerHand, true);
         shouldMatch.put(12, 2);
         shouldMatch.put(2, 1);
         boolean result = shouldMatch.equals(playableCards);
         assertTrue(result);
 
         HashMap<Integer, Integer> secondPlayableCards = new HashMap<>();
-        firstTurn = false;
-        test1.fillPlayableCards(secondPlayableCards, mapHand, winnerHand, firstTurn);
+        test1.fillPlayableCards(secondPlayableCards, mapHand, winnerHand, false);
         boolean result2 = mapHand.equals(secondPlayableCards);
         assertTrue(result2);
 
@@ -182,14 +179,14 @@ class AppTest {
         Queue<String> toTest = new LinkedList<>();
         toTest.add("Joueur4");
         toTest.add("Joueur1");
-        Queue<String> teste = new LinkedList<>();
+        Queue<String> teste;
         teste = test1.falseCasPlayCardValTwo(ordrePlayerBase, player, ordrePlayerWin, newPlayer);
         int tailleQueue = toTest.size();
         boolean identique = false;
         for (int i = 0; i < tailleQueue; i++) {
             String elem1 = toTest.poll();
             String elem2 = teste.poll();
-            if (elem1 == elem2) {
+            if (Objects.equals(elem1, elem2)) {
                 identique = true;
             } else {
                 identique = false;
@@ -221,14 +218,14 @@ class AppTest {
         toTest.add("Joueur4");
         toTest.add("Joueur3");
 
-        Queue<String> teste = new LinkedList<>();
+        Queue<String> teste;
         teste = test1.updateNewPlayer(ordrePlayerBase, casPlayCardValTwo, ordrePlayerWin, newPlayer, player);
         int tailleQueue = toTest.size();
         boolean identique = false;
         for (int i = 0; i < tailleQueue; i++) {
             String elem1 = toTest.poll();
             String elem2 = teste.poll();
-            if (elem1 == elem2) {
+            if (Objects.equals(elem1, elem2)) {
                 identique = true;
             } else {
                 identique = false;
@@ -261,14 +258,14 @@ class AppTest {
         toTest.add("Joueur2");
         toTest.add("Joueur1");
 
-        Queue<String> teste = new LinkedList<>();
+        Queue<String> teste;
         teste = test1.updateNewPlayer(ordrePlayerBase, casPlayCardValTwo, ordrePlayerWin, newPlayer, player);
         int tailleQueue = toTest.size();
         boolean identique = false;
         for (int i = 0; i < tailleQueue; i++) {
             String elem1 = toTest.poll();
             String elem2 = teste.poll();
-            if (elem1 == elem2) {
+            if (Objects.equals(elem1, elem2)) {
                 identique = true;
             } else {
                 identique = false;
@@ -295,14 +292,14 @@ class AppTest {
         toTest.add("Joueur3");
         toTest.add("Joueur4");
 
-        Queue<String> teste = new LinkedList<>();
+        Queue<String> teste;
         teste = test1.organiserOrdrePlayerBaseEnFonctionNextPlay(namePlayer, ordrePlayerBase);
         int tailleQueue = toTest.size();
         boolean identique = false;
         for (int i = 0; i < tailleQueue; i++) {
             String elem1 = toTest.poll();
             String elem2 = teste.poll();
-            if (elem1 == elem2) {
+            if (Objects.equals(elem1, elem2)) {
                 identique = true;
             } else {
                 identique = false;
@@ -335,7 +332,7 @@ class AppTest {
 
         test1.addOrdrePlayerWinIfNotAdd(winnerTemp, ordrePlayersWin, allEndTurn);
 
-        assertTrue(!test1.addOrdrePlayerWinIfNotAdd(winnerTemp, ordrePlayersWin, allEndTurn));
+        assertFalse(test1.addOrdrePlayerWinIfNotAdd(winnerTemp, ordrePlayersWin, allEndTurn));
     }
 
     @Test
@@ -384,14 +381,14 @@ class AppTest {
         toTest.add("Joueur4");
         toTest.add("Joueur2");
 
-        Queue<String> teste = new LinkedList<>();
+        Queue<String> teste;
         teste = test1.updateQueueForNextRound(ordrePlayerBase, player, ordrePlayerWin, winnerTemp, casPlayCardValTwo);
         int tailleQueue = toTest.size();
         boolean identique = false;
         for (int i = 0; i < tailleQueue; i++) {
             String elem1 = toTest.poll();
             String elem2 = teste.poll();
-            if (elem1 == elem2) {
+            if (Objects.equals(elem1, elem2)) {
                 identique = true;
             } else {
                 identique = false;
@@ -427,14 +424,14 @@ class AppTest {
         toTest.add("Joueur2");
         toTest.add("Joueur3");
 
-        Queue<String> teste = new LinkedList<>();
+        Queue<String> teste;
         teste = test1.updateQueueForNextRound(ordrePlayerBase, player, ordrePlayerWin, winnerTemp, casPlayCardValTwo);
         int tailleQueue = toTest.size();
         boolean identique = false;
         for (int i = 0; i < tailleQueue; i++) {
             String elem1 = toTest.poll();
             String elem2 = teste.poll();
-            if (elem1 == elem2) {
+            if (Objects.equals(elem1, elem2)) {
                 identique = true;
             } else {
                 identique = false;
@@ -472,14 +469,14 @@ class AppTest {
         toTest.add("Joueur2");
         toTest.add("Joueur3");
 
-        Queue<String> teste = new LinkedList<>();
+        Queue<String> teste;
         teste = test1.updateQueueForNextRound(ordrePlayerBase, player, ordrePlayerWin, winnerTemp, casPlayCardValTwo);
         int tailleQueue = toTest.size();
         boolean identique = false;
         for (int i = 0; i < tailleQueue; i++) {
             String elem1 = toTest.poll();
             String elem2 = teste.poll();
-            if (elem1 == elem2) {
+            if (Objects.equals(elem1, elem2)) {
                 identique = true;
             } else {
                 identique = false;
@@ -566,9 +563,8 @@ class AppTest {
         ArrayList<Card> winnerHand = new ArrayList<>();
         ArrayList<Card> toTest= new ArrayList<>();
 
-        ArrayList<Card> teste = new ArrayList<>();
+        ArrayList<Card> teste;
         teste = test1.getCardOrGameOver(winnerHand, namePlayer);
-        System.out.println("blabala"+ teste);
         assertEquals(teste, toTest);
     }
 
@@ -581,14 +577,15 @@ class AppTest {
         players.add("Joueur2");
         var test1 = new LocalPresidentGame(players);
 
-        ArrayList<String> test = new ArrayList<>();
-        test = test1.play();
+        ArrayList<String> test;
+        test = (ArrayList<String>) test1.play();
 
         boolean playerNotNull = true;
 
         for(String player : test){
-            if(player == null){
+            if (player == null) {
                 playerNotNull = false;
+                break;
             }
         }
         assertTrue(playerNotNull);

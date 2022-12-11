@@ -135,7 +135,7 @@ class AppTest
     }
 
     @Test
-    void expertSystemShouldReturnFilledTreeMap(){
+    void shouldReturnFilledTreeMap(){
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
 
@@ -145,6 +145,22 @@ class AppTest
         boolean result = !test1.firstTurnExpertSystem(toTest).isEmpty();
         assertTrue(result);
 
+    }
+
+    @Test
+    void expertSystemShouldFillTreeMap(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        Map<Integer, Integer> playableCards = new HashMap<>();
+        playableCards.put(12, 1);
+        playableCards.put(2, 1);
+        ArrayList<Card> winnerHand = new ArrayList<>();
+        winnerHand.add(new Card(CardColor.SPADE, CardValue.FIVE));
+        winnerHand.add(new Card(CardColor.HEART, CardValue.THREE));
+        winnerHand.add(new Card(CardColor.SPADE, CardValue.JACK));
+        boolean premierTour = false;
+        boolean result = !test1.expertSystem(playableCards, winnerHand, premierTour).isEmpty();
+        assertTrue(result);
     }
     }
 

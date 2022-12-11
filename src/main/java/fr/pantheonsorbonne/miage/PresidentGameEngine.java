@@ -77,6 +77,8 @@ public abstract class PresidentGameEngine {
 
     protected abstract Set<String> getInitialPlayers();
 
+    protected abstract String fetchQofH();
+
     /**
      * give some card to a player
      *

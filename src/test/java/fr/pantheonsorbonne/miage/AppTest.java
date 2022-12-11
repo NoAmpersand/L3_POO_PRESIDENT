@@ -93,7 +93,7 @@ class AppTest
 
     }
 
-   @Test
+    @Test
     void mapShouldBeFilled(){
        HashSet<String> players = new HashSet<>();
        var test1 = new LocalPresidentGame(players);
@@ -119,6 +119,5 @@ class AppTest
         assertTrue(result2);
 
     }
-
     }
 

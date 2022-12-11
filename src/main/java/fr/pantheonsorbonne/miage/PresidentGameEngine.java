@@ -1,6 +1,5 @@
 package fr.pantheonsorbonne.miage;
 
-import fr.pantheonsorbonne.miage.exception.NoMoreCardException;
 import fr.pantheonsorbonne.miage.game.Card;
 import fr.pantheonsorbonne.miage.game.Deck;
 
@@ -99,13 +98,38 @@ public abstract class PresidentGameEngine {
         }
     }
 
-    private void organiserOrdrePlayerBaseEnFonctionNextPlay(String namePlayer, Queue<String> ordrePlayerBase){
+    private void organiserOrdrePlayerBaseEnFonctionNextPlay(String namePlayer, Queue<String> ordrePlayerBase) {
         String playerEtudier;
         while (true) {
             playerEtudier = ordrePlayerBase.poll();
             ordrePlayerBase.offer(playerEtudier);
             if (Objects.equals(playerEtudier, namePlayer)) {
                 break;
+            }
+        }
+    }
+
+    private void falseCasPlayCardValTwo(Queue<String> ordrePlayerBase, Queue<String> players,
+            Queue<String> ordrePlayersWin, Queue<String> newPlayers) {
+        for (String playerAjout : ordrePlayerBase) {
+            if (Objects.equals(playerAjout, players.peek())) {
+                break;
+            }
+            if (!ordrePlayersWin.contains(playerAjout) && !Objects.equals(newPlayers.peek(), playerAjout)) {
+                newPlayers.add(playerAjout);
+            }
+        }
+    }
+
+    private void updateNewPlayer(Queue<String> ordrePlayerBase, boolean casPlayCardValTwo,
+            Queue<String> ordrePlayersWin, Queue<String> newPlayers, Queue<String> players) {
+        if (!casPlayCardValTwo) {
+            falseCasPlayCardValTwo(ordrePlayerBase, players, ordrePlayersWin, newPlayers);
+        } else {
+            for (String playerAjout : ordrePlayerBase) {
+                if (!ordrePlayersWin.contains(playerAjout) && !Objects.equals(newPlayers.peek(), playerAjout)) {
+                    newPlayers.add(playerAjout);
+                }
             }
         }
     }
@@ -120,27 +144,11 @@ public abstract class PresidentGameEngine {
                 newPlayers.add(players.peek());
             }
             System.out.println(ordrePlayerBase);
-        }else {
+        } else {
             String playerPlayNextWinner = players.poll();
             organiserOrdrePlayerBaseEnFonctionNextPlay(playerPlayNextWinner, ordrePlayerBase);
         }
-        if(!casPlayCardValTwo){
-            for (String playerAjout : ordrePlayerBase) {
-                if (Objects.equals(playerAjout, players.peek())) {
-                    break;
-                }
-                if (!ordrePlayersWin.contains(playerAjout) && !Objects.equals(newPlayers.peek(), playerAjout)) {
-                    newPlayers.add(playerAjout);
-                }
-            }
-        }
-        else{
-            for (String playerAjout : ordrePlayerBase) {
-                if (!ordrePlayersWin.contains(playerAjout) && !Objects.equals(newPlayers.peek(), playerAjout)) {
-                    newPlayers.add(playerAjout);
-                }
-            }
-        }
+        updateNewPlayer(ordrePlayerBase, casPlayCardValTwo, ordrePlayersWin, newPlayers, players);
         if (!newPlayers.isEmpty()) {
             HashMap<Integer, Integer> playerHandFirstNewPlayers = getPlayerMapCard(newPlayers.peek());
             if (playerHandFirstNewPlayers.isEmpty()) {
@@ -148,6 +156,26 @@ public abstract class PresidentGameEngine {
             }
         }
         return newPlayers;
+    }
+
+    private void addOrdrePlayerWin(String namePlayer, Queue<String> players, Queue<String> ordrePlayersWin) {
+        HashMap<Integer, Integer> playerHandTestEmpty = getPlayerMapCard(namePlayer);
+        if (!playerHandTestEmpty.isEmpty()) {
+            players.offer(namePlayer);
+        } else {
+            if (!ordrePlayersWin.contains(namePlayer)) {
+                ordrePlayersWin.add(namePlayer);
+            }
+        }
+    }
+
+    private boolean addOrdrePlayerWinIfNotAdd(String winnerTemp,Queue<String> ordrePlayersWin, boolean allEndTurn) {
+        HashMap<Integer, Integer> playerHandWinner = getPlayerMapCard(winnerTemp);
+        if (playerHandWinner.isEmpty() && !ordrePlayersWin.contains(winnerTemp)) {
+            ordrePlayersWin.add(winnerTemp);
+            allEndTurn = true;
+        }
+        return allEndTurn;
     }
 
     protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin,
@@ -167,34 +195,23 @@ public abstract class PresidentGameEngine {
             ArrayList<Card> playerCards = getCardOrGameOver(winnerHand, namePlayer);
             if (playerCards.isEmpty()) {
                 endTurn.put(namePlayer, true);
-            } 
-            else if(playerCards.get(0).valueToInt() == 14){
+            } else if (playerCards.get(0).valueToInt() == 14) {
                 winnerHand = playerCards;
                 winnerTemp = namePlayer;
                 allEndTurn = true;
                 casPlayCardValTwo = true;
-            }else {
+            } else {
                 winnerHand = playerCards;
                 winnerTemp = namePlayer;
-                HashMap<Integer, Integer> playerHandTestEmpty = getPlayerMapCard(namePlayer);
-                if (!playerHandTestEmpty.isEmpty()) {
-                    players.offer(namePlayer);
-                } else {
-                    if (!ordrePlayersWin.contains(namePlayer)) {
-                        ordrePlayersWin.add(namePlayer);
-                    }
-                }
+                addOrdrePlayerWin(namePlayer, players, ordrePlayersWin);
             }
             if (0 == players.size() - 1) {
                 allEndTurn = true;
             }
             if (!"".equals(winnerTemp)) {
-                HashMap<Integer, Integer> playerHandWinner = getPlayerMapCard(winnerTemp);
-                if (playerHandWinner.isEmpty() && !ordrePlayersWin.contains(winnerTemp)) {
-                    ordrePlayersWin.add(winnerTemp);
-                    allEndTurn = true;
-                }
+                allEndTurn = addOrdrePlayerWinIfNotAdd(winnerTemp, ordrePlayersWin, allEndTurn);
             }
+
         }
         if (players.size() == 1 && ordrePlayersWin.size() == 3) {
             ordrePlayersWin.add(players.poll());
@@ -221,15 +238,6 @@ public abstract class PresidentGameEngine {
      * @param cards      the cards as a collection of cards
      */
     protected abstract void giveCardsToPlayer(Collection<Card> cards, String playerName);
-
-    /**
-     * get a card from a player
-     *
-     * @param player the player to give card
-     * @return the card from the player
-     * @throws NoMoreCardException if the player does not have a remaining card
-     */
-    protected abstract Card getCardFromPlayer(String player) throws NoMoreCardException;
 
     protected abstract HashMap<Integer, Integer> getPlayerMapCard(String playerName);
 }

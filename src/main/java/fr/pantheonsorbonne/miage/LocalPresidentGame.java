@@ -182,18 +182,8 @@ public class LocalPresidentGame extends PresidentGameEngine {
         this.playerCards.get(winner).addAll(cards);
     }
 
-    @Override
-    protected Card getCardFromPlayer(String player) throws NoMoreCardException {
-        if (this.playerCards.get(player).isEmpty()) {
-            throw new NoMoreCardException();
-        } else {
-            return this.playerCards.get(player).remove(0);
-        }
-    }
-
     protected String fetchQofH() {
         String specialPlayer = "";
-
         for (String player : playerCards.keySet()) {
             for (Card card : playerCards.get(player)) {
                 if (card.verifQofH()) {
@@ -201,7 +191,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
         }
-
         return specialPlayer;
     }
 

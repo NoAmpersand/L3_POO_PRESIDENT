@@ -5,6 +5,7 @@ import fr.pantheonsorbonne.miage.game.Deck;
 
 import java.util.*;
 
+
 /**
  * this class is a abstract version of the engine, to be used locally on through
  * the network
@@ -79,19 +80,6 @@ public abstract class PresidentGameEngine {
      */
     protected abstract void giveCardsToPlayer(String playerName, String hand);
 
-    protected boolean allPlayerPass(HashMap<String, Boolean> endTurn) {
-        int endTurnCounter = 0;
-        int remainingPlayersInTurn = 0;
-        for (Map.Entry<String, Boolean> playerEndTurn : endTurn.entrySet()) {
-            if (Boolean.TRUE.equals(playerEndTurn.getValue())) { // si boolean == false à tester proposition
-                                                                 // sonarlink
-                endTurnCounter += 1;
-            }
-            remainingPlayersInTurn += 1;
-        }
-        return endTurnCounter + 1 == remainingPlayersInTurn;
-    }
-
     void endTurnFiller(HashMap<String, Boolean> endTurn, Queue<String> players) {
         for (String player : players) {
             endTurn.put(player, false);
@@ -106,7 +94,7 @@ public abstract class PresidentGameEngine {
         } while (!Objects.equals(playerEtudier, namePlayer));
     }
 
-    private void falseCasPlayCardValTwo(Queue<String> ordrePlayerBase, Queue<String> players,
+    protected Queue<String> falseCasPlayCardValTwo(Queue<String> ordrePlayerBase, Queue<String> players,
             Queue<String> ordrePlayersWin, Queue<String> newPlayers) {
         for (String playerAjout : ordrePlayerBase) {
             if (Objects.equals(playerAjout, players.peek())) {
@@ -116,6 +104,7 @@ public abstract class PresidentGameEngine {
                 newPlayers.add(playerAjout);
             }
         }
+        return newPlayers;
     }
 
     private void updateNewPlayer(Queue<String> ordrePlayerBase, boolean casPlayCardValTwo,

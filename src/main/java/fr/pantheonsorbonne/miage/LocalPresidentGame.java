@@ -1,6 +1,5 @@
 package fr.pantheonsorbonne.miage;
 
-import fr.pantheonsorbonne.miage.exception.NoMoreCardException;
 import fr.pantheonsorbonne.miage.game.Card;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
 public class LocalPresidentGame extends PresidentGameEngine {
 
     private final Set<String> initialPlayers;
-    final Map<String, ArrayList<Card>> playerCards = new HashMap<>();
+    Map<String, ArrayList<Card>> playerCards = new HashMap<>();
 
     public LocalPresidentGame(Set<String> initialPlayers) {
         this.initialPlayers = initialPlayers;
@@ -38,7 +37,8 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin, Queue<String> ordrePlayerBase) {
+    protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin,
+            Queue<String> ordrePlayerBase) {
         System.out.println("New round:");
         System.out
                 .println(
@@ -88,13 +88,13 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     protected void deleteCardInHand(int nbDeleteCard, ArrayList<Card> hand, ArrayList<Card> cardPlay,
-            TreeMap<Integer, Integer> mapPlay, String namePlayer) {
+            String namePlayer) {
         if (nbDeleteCard == 0) {
             return;
         }
-        for (int i = 0; i <= nbDeleteCard; i++) {
+        for (int i = 0; i < nbDeleteCard; i++) {
             for (Card card : hand) {
-                if (cardPlay.contains(card) || mapPlay.firstEntry() == null) {
+                if (cardPlay.contains(card)) {
                     hand.remove(card);
                     break;
                 }
@@ -136,7 +136,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
             }
         }
         System.out.println(cardPlay);
-        deleteCardInHand(nbDeleteCard, hand, cardPlay, mapPlay, namePlayer);
+        deleteCardInHand(nbDeleteCard, hand, cardPlay, namePlayer);
 
         System.out.println("hand retirer " + hand);
         return cardPlay;

@@ -1,3 +1,4 @@
+
 package fr.pantheonsorbonne.miage;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -10,22 +11,23 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import javax.naming.LinkException;
 
 /**
  * Unit test for simple App.
  */
-class AppTest {
+class AppTest
+{
     /**
      * Rigorous Test :-)
      */
     @Test
-    void shouldAnswerWithTrue() {
-        assertTrue(true);
+    void shouldAnswerWithTrue()
+    {
+        assertTrue( true );
     }
 
     @Test
-    void getInitialPlayers() {
+    void getInitialPlayers(){
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
         assertEquals(players, test1.getInitialPlayers());
@@ -39,13 +41,12 @@ class AppTest {
         ArrayList<Card> cardJ1 = new ArrayList<>();
         cardJ1.add(Card.valueOf("QH"));
         test1.playerCards.put("J1", cardJ1);
-        test1.giveCardsToPlayer("J1", "QH");
-        boolean result = !cardJ1.isEmpty();
+        test1.giveCardsToPlayer("J1","QH");
+        boolean result= !cardJ1.isEmpty();
         assertTrue(result);
     }
-
     @Test
-    void fetchQofH() {
+    void fetchQofH(){
         HashSet<String> players = new HashSet<>();
         players.add("P1");
         players.add("P2");
@@ -62,7 +63,7 @@ class AppTest {
     }
 
     @Test
-    void handShouldBeFilled() {
+    void handShouldBeFilled(){
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
         Map<Integer, Integer> handToFill = new HashMap<>();
@@ -74,9 +75,8 @@ class AppTest {
         assertEquals(2, handToFill.get(11));
 
     }
-
     @Test
-    void allShouldBeFalse() {
+    void allShouldBeFalse(){
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
 
@@ -95,31 +95,29 @@ class AppTest {
     }
 
     @Test
-    void mapShouldBeFilled() {
-        HashSet<String> players = new HashSet<>();
-        var test1 = new LocalPresidentGame(players);
-        HashMap<Integer, Integer> playableCards = new HashMap<>();
-        playableCards.put(12, 1);
-        Map<Integer, Integer> mapHand = new HashMap<>();
-        mapHand.put(12, 1);
-        mapHand.put(2, 1);
-        ArrayList<Card> winnerHand = new ArrayList<>();
-        winnerHand.add(new Card(CardColor.SPADE, CardValue.THREE));
-        boolean firstTurn = true;
-        Map<Integer, Integer> shouldMatch = new HashMap<>();
-        test1.fillPlayableCards(playableCards, mapHand, winnerHand, firstTurn);
-        shouldMatch.put(12, 2);
-        shouldMatch.put(2, 1);
-        boolean result = shouldMatch.equals(playableCards);
-        assertTrue(result);
+    void mapShouldBeFilled(){
+       HashSet<String> players = new HashSet<>();
+       var test1 = new LocalPresidentGame(players);
+       HashMap<Integer, Integer> playableCards = new HashMap<>();
+       playableCards.put(12, 1);
+       Map<Integer, Integer> mapHand = new HashMap<>();
+       mapHand.put(12, 1);
+       mapHand.put(2, 1);
+       ArrayList<Card> winnerHand = new ArrayList<>();
+       winnerHand.add(new Card(CardColor.SPADE, CardValue.THREE));
+       boolean firstTurn = true;
+       Map<Integer, Integer> shouldMatch = new HashMap<>();
+       test1.fillPlayableCards(playableCards, mapHand, winnerHand, firstTurn);
+       shouldMatch.put(12,2);
+       shouldMatch.put(2,1);
+       boolean result = shouldMatch.equals(playableCards);
+       assertTrue(result);
 
-        HashMap<Integer, Integer> secondPlayableCards = new HashMap<>();
-        firstTurn = false;
-        test1.fillPlayableCards(secondPlayableCards, mapHand, winnerHand, firstTurn);
-        boolean result2 = mapHand.equals(secondPlayableCards);
+       HashMap<Integer, Integer> secondPlayableCards = new HashMap<>();
+       firstTurn = false;
+       test1.fillPlayableCards(secondPlayableCards, mapHand, winnerHand, firstTurn);
+       boolean result2 = mapHand.equals(secondPlayableCards);
         assertTrue(result2);
-<<<<<<< HEAD
-=======
 
     }
 
@@ -149,52 +147,6 @@ class AppTest {
         assertTrue(result);
 
     }
-
-    @Test
-    void expertSystemShouldFillTreeMap(){
-        HashSet<String> players = new HashSet<>();
-        var test1 = new LocalPresidentGame(players);
-        Map<Integer, Integer> playableCards = new HashMap<>();
-        playableCards.put(12, 1);
-        playableCards.put(2, 1);
-        ArrayList<Card> winnerHand = new ArrayList<>();
-        winnerHand.add(new Card(CardColor.SPADE, CardValue.FIVE));
-        winnerHand.add(new Card(CardColor.HEART, CardValue.THREE));
-        winnerHand.add(new Card(CardColor.SPADE, CardValue.JACK));
-        boolean premierTour = false;
-        boolean result = !test1.expertSystem(playableCards, winnerHand, premierTour).isEmpty();
-        assertTrue(result);
-    }
->>>>>>> 283fcd6a6dc74a1bf89381713a1fb64c4cba59a9
-    }
-
-    @Test
-    void shouldReturnPlayerCard() {
-        HashSet<String> players = new HashSet<>();
-        var test1 = new LocalPresidentGame(players);
-
-        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
-        ArrayList<Card> handToTest = new ArrayList<>();
-        handToTest.add(new Card(CardColor.SPADE, CardValue.FIVE));
-        toTest.put("P1", handToTest);
-        test1.playerCards = toTest;
-
-        assertEquals(handToTest, test1.getPlayerCards("P1"));
-    }
-
-    @Test
-    void expertSystemShouldReturnFilledTreeMap() {
-        HashSet<String> players = new HashSet<>();
-        var test1 = new LocalPresidentGame(players);
-
-        HashMap<Integer, Integer> toTest = new HashMap<>();
-        toTest.put(2, 2);
-        toTest.put(3, 2);
-        boolean result = !test1.firstTurnExpertSystem(toTest).isEmpty();
-        assertTrue(result);
-
-    }
-
 
     @Test
     void expertSystemShouldFillTreeMap(){

@@ -147,7 +147,7 @@ public abstract class PresidentGameEngine {
         return newPlayers;
     }
 
-    private void addOrdrePlayerWin(String namePlayer, Queue<String> players, Queue<String> ordrePlayersWin) {
+    void addOrdrePlayerWin(String namePlayer, Queue<String> players, Queue<String> ordrePlayersWin) {
         HashMap<Integer, Integer> playerHandTestEmpty = getPlayerMapCard(namePlayer);
         if (!playerHandTestEmpty.isEmpty()) {
             players.offer(namePlayer);

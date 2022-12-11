@@ -1,15 +1,14 @@
 
 package fr.pantheonsorbonne.miage;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import fr.pantheonsorbonne.miage.enums.CardColor;
 import fr.pantheonsorbonne.miage.enums.CardValue;
 import fr.pantheonsorbonne.miage.game.Card;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test for simple App.
@@ -328,5 +327,56 @@ class AppTest {
         assertTrue(ordrePlayersWin.contains("P1"));
 
 
+    }
+
+    @Test
+    void addOrderPlayerWin(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
+        ArrayList<Card> handToTest = new ArrayList<>();
+        toTest.put("P1", handToTest);
+        test1.playerCards = toTest;
+
+
+        String namePlayer = "P1";
+        Queue<String> playersToTest  = new LinkedList<>();
+        playersToTest.add("P1");
+        playersToTest.add("P2");
+        playersToTest.add("P3");
+        playersToTest.add("P4");
+        Queue<String> ordrePlayersWin  = new LinkedList<>();
+        ordrePlayersWin.add("P2");
+        ordrePlayersWin.add("P3");
+        ordrePlayersWin.add("P4");
+        test1.addOrdrePlayerWin("P1", playersToTest, ordrePlayersWin);
+        assertTrue(playersToTest.contains("P1"));
+    }
+
+    @Test
+    void shouldntContainP1(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
+        ArrayList<Card> handToTest = new ArrayList<>();
+        handToTest.add(new Card(CardColor.SPADE, CardValue.FIVE));
+        handToTest.add(new Card(CardColor.DIAMOND, CardValue.FIVE));
+        handToTest.add(new Card(CardColor.CLUB, CardValue.FIVE));
+        handToTest.add(new Card(CardColor.HEART, CardValue.FIVE));
+        toTest.put("P1", handToTest);
+        test1.playerCards = toTest;
+
+
+        String namePlayer = "P1";
+        Queue<String> playersToTest  = new LinkedList<>();
+        playersToTest.add("P2");
+        playersToTest.add("P3");
+        playersToTest.add("P4");
+        Queue<String> ordrePlayersWin  = new LinkedList<>();
+        ordrePlayersWin.add("P2");
+        ordrePlayersWin.add("P3");
+        ordrePlayersWin.add("P4");
+        test1.addOrdrePlayerWin("P1", playersToTest, ordrePlayersWin);
+        assertTrue(playersToTest.contains("P1"));
     }
 }

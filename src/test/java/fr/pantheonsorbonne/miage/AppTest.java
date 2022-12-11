@@ -133,5 +133,18 @@ class AppTest
 
         assertEquals(handToTest, test1.getPlayerCards("P1"));
     }
+
+    @Test
+    void expertSystemShouldReturnFilledTreeMap(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+
+        HashMap<Integer, Integer> toTest = new HashMap<>();
+        toTest.put(2, 2);
+        toTest.put(3, 2);
+        boolean result = !test1.firstTurnExpertSystem(toTest).isEmpty();
+        assertTrue(result);
+
+    }
     }
 

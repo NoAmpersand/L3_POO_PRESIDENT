@@ -99,8 +99,8 @@ public abstract class PresidentGameEngine {
         }
     }
 
-    private Queue<String> updateQueueForNextRound(Queue<String> ordrePlayerBase, Queue<String> players,
-                                                  Queue<String> ordrePlayersWin, String winnerTemp) {
+    private Queue<String> upgateQueueForNextRound(Queue<String> ordrePlayerBase, Queue<String> players,
+            Queue<String> ordrePlayersWin, String winnerTemp) {
         String playerEtudier;
         while (true) {
             playerEtudier = ordrePlayerBase.poll();
@@ -145,7 +145,6 @@ public abstract class PresidentGameEngine {
                 }
             }
             HashMap<Integer, Integer> playerHand = getPlayerMapCard(namePlayer);
-            assert winnerTemp != null;
             if (winnerTemp.equals(namePlayer) || playerHand.isEmpty()) {
                 break;
             }
@@ -170,7 +169,7 @@ public abstract class PresidentGameEngine {
         if (players.size() == 1 && ordrePlayersWin.size() == 3) {
             ordrePlayersWin.add(players.poll());
         }
-        return updateQueueForNextRound(ordrePlayerBase, players, ordrePlayersWin, winnerTemp);
+        return upgateQueueForNextRound(ordrePlayerBase, players, ordrePlayersWin, winnerTemp);
     }
 
     /**
@@ -182,7 +181,6 @@ public abstract class PresidentGameEngine {
 
     protected abstract ArrayList<Card> getCardOrGameOver(ArrayList<Card> winnerHand, String namePlayer);
 
-    protected abstract Card getCardOrGameOver(Collection<Card> leftOverCard, String cardProviderPlayer, String cardProviderPlayerOpponent);
     /**
      * give some card to a player
      *

@@ -142,11 +142,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
         return cardPlay;
     }
 
-    @Override
-    protected Card getCardOrGameOver(Collection<Card> leftOverCard, String cardProviderPlayer, String cardProviderPlayerOpponent) {
-        return null;
-    }
-
     protected TreeMap<Integer, Integer> expertSystem(Map<Integer, Integer> playableCards,
             ArrayList<Card> winnerHand, boolean premierTour) {
 
@@ -211,6 +206,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     protected ArrayList<Card> getPlayerCards(String playerName) {
+
         return playerCards.get(playerName);
     }
 

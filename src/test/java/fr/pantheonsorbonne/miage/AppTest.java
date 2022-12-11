@@ -118,6 +118,54 @@ class AppTest {
         test1.fillPlayableCards(secondPlayableCards, mapHand, winnerHand, firstTurn);
         boolean result2 = mapHand.equals(secondPlayableCards);
         assertTrue(result2);
+<<<<<<< HEAD
+=======
+
+    }
+
+   @Test
+    void shouldReturnPlayerCard(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+
+        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
+        ArrayList<Card> handToTest = new ArrayList<>();
+        handToTest.add(new Card(CardColor.SPADE, CardValue.FIVE));
+        toTest.put("P1", handToTest);
+        test1.playerCards = toTest;
+
+        assertEquals(handToTest, test1.getPlayerCards("P1"));
+    }
+
+    @Test
+    void shouldReturnFilledTreeMap(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+
+        HashMap<Integer, Integer> toTest = new HashMap<>();
+        toTest.put(2, 2);
+        toTest.put(3, 2);
+        boolean result = !test1.firstTurnExpertSystem(toTest).isEmpty();
+        assertTrue(result);
+
+    }
+
+    @Test
+    void expertSystemShouldFillTreeMap(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        Map<Integer, Integer> playableCards = new HashMap<>();
+        playableCards.put(12, 1);
+        playableCards.put(2, 1);
+        ArrayList<Card> winnerHand = new ArrayList<>();
+        winnerHand.add(new Card(CardColor.SPADE, CardValue.FIVE));
+        winnerHand.add(new Card(CardColor.HEART, CardValue.THREE));
+        winnerHand.add(new Card(CardColor.SPADE, CardValue.JACK));
+        boolean premierTour = false;
+        boolean result = !test1.expertSystem(playableCards, winnerHand, premierTour).isEmpty();
+        assertTrue(result);
+    }
+>>>>>>> 283fcd6a6dc74a1bf89381713a1fb64c4cba59a9
     }
 
     @Test

@@ -2,7 +2,6 @@ package fr.pantheonsorbonne.miage;
 
 import fr.pantheonsorbonne.miage.game.Card;
 
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -12,11 +11,11 @@ import java.util.stream.Collectors;
 public class LocalPresidentGame extends PresidentGameEngine {
 
     private final Set<String> initialPlayers;
-    Map<String, ArrayList<Card>> playerCards = new HashMap<>();
+    Map<String, List<Card>> playerCards = new HashMap<>();
 
     /**
      * Cette methode initialise un player avec son arrayList
-     * 
+     *
      * @param initialPlayers Set<String> qui represente tout les joueurs qui doit
      *                       etre initialiser
      */
@@ -29,7 +28,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     /**
      * Cette methode est la méthode qui lance le jeu
-     *
      */
     public static void main(String... args) {
         LocalPresidentGame localWarGame = new LocalPresidentGame(Set.of("Joueur1", "Joueur2", "Joueur3", "Joueur4"));
@@ -48,7 +46,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     @Override
     /*
      * Cette méthode donne des cartes à un joueur
-     * 
+     *
      * @param playerName String nom du joueur
      * @param hand       String deck
      */
@@ -60,13 +58,13 @@ public class LocalPresidentGame extends PresidentGameEngine {
     @Override
     /*
      * Cette methode permet d'effecter un round(un pli)
-     * 
+     *
      * @param players Queue<String> ordre des joueurs
      * @param ordrePlayersWin Queue<String> ordre des joueurs qui ont gagnés
      * @param ordrePlayerBase Queue<String> ordre des joueurs de base
      */
     protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin,
-            Queue<String> ordrePlayerBase) {
+                                      Queue<String> ordrePlayerBase) {
         System.out.println("New round:");
         System.out
                 .println(
@@ -74,7 +72,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                                 .keySet().stream().filter(p -> !this.playerCards.get(p).isEmpty()).map(
                                         p -> p + " has "
                                                 + this.playerCards.get(p).stream().map(Card::toFancyString)
-                                                        .collect(Collectors.joining(" ")))
+                                                .collect(Collectors.joining(" ")))
                                 .collect(Collectors.joining("\n")));
         System.out.println();
         return super.playRound(players, ordrePlayersWin, ordrePlayerBase);
@@ -84,7 +82,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     @Override
     /*
      * Cette méthode declare le gagnant de la game
-     * 
+     *
      * @param winner String nom du joueur gagnant
      */
     protected void declareWinner(String winner) {
@@ -93,11 +91,11 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     /**
      * Cette methode remplie une map handToFill a partir de la main d'un joueur
-     * 
+     *
      * @param handToFill   map de la main du joueur
      * @param handToVerify ArrayList<Card> main du joueur
      */
-    protected void fillHand(Map<Integer, Integer> handToFill, ArrayList<Card> handToVerify) {
+    protected void fillHand(Map<Integer, Integer> handToFill, List<Card> handToVerify) {
         for (Card card : handToVerify) {
             if (handToFill.containsKey(card.valueToInt())) {
                 handToFill.put(card.valueToInt(), handToFill.get(card.valueToInt()) + 1);
@@ -110,19 +108,19 @@ public class LocalPresidentGame extends PresidentGameEngine {
     /**
      * Cette methode permet de remplir playableCards afin de savoir qu'elle carte
      * peut jouer le joueur
-     * 
+     *
      * @param playableCards HashMap<Integer, Integer> le dictionnaire de cartes que
      *                      peut jouer le joueur
      * @param mapHand       Map<Integer, Integer> la map de cartes que le joueur
      *                      possède
      * @param winnerHand    ArrayList<Card> les cartes de la personne qui est en
      *                      train de gagner sur la round
-     * @param firstTurn     boolean qui indique si c'est la premiere personne à
+     * @param isFirstTurn   boolean qui indique si c'est la premiere personne à
      *                      jouer dans la round
      */
-    protected void fillPlayableCards(HashMap<Integer, Integer> playableCards, Map<Integer, Integer> mapHand,
-            ArrayList<Card> winnerHand, boolean firstTurn) {
-        if (firstTurn) {
+    protected void fillPlayableCards(Map<Integer, Integer> playableCards, Map<Integer, Integer> mapHand,
+                                     List<Card> winnerHand, boolean isFirstTurn) {
+        if (isFirstTurn) {
             for (Map.Entry<Integer, Integer> cardValue : mapHand.entrySet()) {
                 if (playableCards.containsKey(cardValue.getKey())) {
                     playableCards.put(cardValue.getKey(), cardValue.getValue() + 1);
@@ -132,6 +130,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
             }
         } else {
             for (Map.Entry<Integer, Integer> cardValue : mapHand.entrySet()) {
+                //the fact that you get only the first indicates that a Queue would have been better
                 if (winnerHand.get(0).valueToInt() <= cardValue.getKey() && winnerHand.size() <= cardValue.getValue()) {
                     playableCards.put(cardValue.getKey(), cardValue.getValue());
                 }
@@ -147,14 +146,14 @@ public class LocalPresidentGame extends PresidentGameEngine {
      * @param hand         ArrayList<Card> la main du joueur
      * @param cardPlay     ArrayList<Card> les cartes qui ont été joué par le joueur
      */
-    protected void deleteCardInHand(int nbDeleteCard, ArrayList<Card> hand, ArrayList<Card> cardPlay) {
-        if (nbDeleteCard == 0) {
-            return;
+    protected void deleteCardInHand(int nbDeleteCard, List<Card> hand, List<Card> cardPlay) {
+        if (nbDeleteCard == 0) {//use size
+            return; //no error handling?
         }
         for (int i = 0; i < nbDeleteCard; i++) {
             for (Card card : hand) {
                 if (cardPlay.contains(card)) {
-                    hand.remove(card);
+                    hand.remove(card); //you CANNOT remove a card while iterating on the collection
                     break;
                 }
             }
@@ -171,14 +170,14 @@ public class LocalPresidentGame extends PresidentGameEngine {
      * @param namePlayer Sting nom du joueur qui doit jouer une carte
      * @return return la, les ou aucune cartes qui seront jouer dans la round
      */
-    protected ArrayList<Card> getCardOrGameOver(ArrayList<Card> winnerHand, String namePlayer) {
+    protected List<Card> getCardOrGameOver(List<Card> winnerHand, String namePlayer) {
         boolean premierTour = winnerHand.isEmpty();
-        ArrayList<Card> hand = this.playerCards.get(namePlayer);
+        List<Card> hand = this.playerCards.get(namePlayer);
         Map<Integer, Integer> mapHand = new HashMap<>();
         fillHand(mapHand, hand);
         HashMap<Integer, Integer> playableCards = new HashMap<>();
         fillPlayableCards(playableCards, mapHand, winnerHand, premierTour);
-        TreeMap<Integer, Integer> mapPlay = expertSystem(playableCards, winnerHand, premierTour);
+        NavigableMap<Integer, Integer> mapPlay = expertSystem(playableCards, winnerHand, premierTour);
         ArrayList<Card> cardPlay = new ArrayList<>();
         int nbDeleteCard = 0;
         int index = 0;
@@ -202,19 +201,19 @@ public class LocalPresidentGame extends PresidentGameEngine {
     /**
      * Cette methode permet de choisir la ou les meilleures cartes possiblent à
      * jouer et les return sous forme d'une map
-     * 
+     *
      * @param playableCards Map<Integer, Integer> map des cartes qui sont possibles
      *                      à jouer
      * @param winnerHand    ArrayList<Card> les cartes du dernier joueur qui est
      *                      entrain de gangner la round
      * @param premierTour   boolean qui indique si il est le premier à jouer
      * @return TreeMap<Integer, Integer> les cartes qui vont etre jouer sous forme
-     *         d'une map
+     * d'une map
      */
-    protected TreeMap<Integer, Integer> expertSystem(Map<Integer, Integer> playableCards,
-            ArrayList<Card> winnerHand, boolean premierTour) {
+    protected NavigableMap<Integer, Integer> expertSystem(Map<Integer, Integer> playableCards,
+                                                     List<Card> winnerHand, boolean premierTour) {
 
-        TreeMap<Integer, Integer> playCard = new TreeMap<>();
+        NavigableMap<Integer, Integer> playCard = new TreeMap<>();
         if (premierTour) {
             playCard = firstTurnExpertSystem(playableCards);
         } else {
@@ -232,23 +231,23 @@ public class LocalPresidentGame extends PresidentGameEngine {
      * Cette methode permet au joueur quand il est le premier à jouer dans la round
      * de choisir la ou les meilleures cartes possiblent à
      * jouer et les return sous forme d'une map
-     * 
+     *
      * @param playableCards Map<Integer, Integer> map des cartes qui sont possibles
      *                      à jouer
      * @return TreeMap<Integer, Integer> les cartes qui vont etre jouer sous forme
-     *         d'une map
+     * d'une map
      */
-    protected TreeMap<Integer, Integer> firstTurnExpertSystem(Map<Integer, Integer> playableCards) {
+    protected NavigableMap<Integer, Integer> firstTurnExpertSystem(Map<Integer, Integer> playableCards) {
 
         int maxCardDouble = 0;
-        int minValueOfMaxCardDouble = 100;
+        int minValueOfMaxCardDouble = 100; //constant needed
         for (Map.Entry<Integer, Integer> card : playableCards.entrySet()) {
             if (maxCardDouble <= card.getValue() && minValueOfMaxCardDouble > card.getKey()) {
                 maxCardDouble = card.getValue();
                 minValueOfMaxCardDouble = card.getKey();
             }
         }
-        TreeMap<Integer, Integer> playCard = new TreeMap<>();
+        NavigableMap<Integer, Integer> playCard = new TreeMap<>();
         playCard.put(minValueOfMaxCardDouble, maxCardDouble);
         return playCard;
     }
@@ -261,6 +260,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
      * @param player String le joueur qui va recevoir les cartes
      */
     protected void giveCardsToPlayer(Collection<Card> card, String player) {
+        //your names are confusing cards vs card, both collections
         List<Card> cards = new ArrayList<>(card);
         Collections.shuffle(cards);
         this.playerCards.get(player).addAll(cards);
@@ -268,14 +268,14 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     /**
      * Cette methode renvoie le nom du joueur qui a la dame de coeur
-     * 
+     *
      * @return String nom du joueur qui à la dame de coeur
      */
     protected String fetchQofH() {
         String specialPlayer = "";
-        for(Map.Entry<String, ArrayList<Card>> playersCards : playerCards.entrySet()){
-            for(Card card : playersCards.getValue()){
-                if(card.verifQofH()){
+        for (Map.Entry<String, List<Card>> playersCards : playerCards.entrySet()) {
+            for (Card card : playersCards.getValue()) {
+                if (card.verifQofH()) {
                     specialPlayer = playersCards.getKey();
                 }
             }
@@ -285,23 +285,23 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     /**
      * Cette methode renvoie les cartes d'un joueur
-     * 
+     *
      * @param playerName String nom du joueur
      * @return ArrayList<Card> les cartes du joueur
      */
-    protected ArrayList<Card> getPlayerCards(String playerName) {
+    protected List<Card> getPlayerCards(String playerName) {
         return playerCards.get(playerName);
     }
 
     /**
      * Cette methode renvoie les cartes d'un joueur sous forme d'un dictionnaire
-     * 
+     *
      * @param playerName String nom du joueur
      * @return HashMap<Integer, Integer> dictionnaire des cartes du joueur
      */
-    protected HashMap<Integer, Integer> getPlayerMapCard(String playerName) {
-        ArrayList<Card> playerHand = getPlayerCards(playerName);
-        HashMap<Integer, Integer> mapHand = new HashMap<>();
+    protected Map<Integer, Integer> getPlayerMapCard(String playerName) {
+        List<Card> playerHand = getPlayerCards(playerName);
+        Map<Integer, Integer> mapHand = new HashMap<>();
         for (Card card : playerHand) {
             if (mapHand.containsKey(card.valueToInt())) {
                 int valueToIncrement = mapHand.get(card.valueToInt());

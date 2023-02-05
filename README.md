@@ -1,5 +1,6 @@
 # Règles du Président :
 
+//no, you don't support 3 or 5 players game! (arrayIndexOOB exception)
 Le jeu se joue à au moins deux joueurs et comporte un maitre du jeu non joueur.
 Le but du jeu est de ne plus avoir de cartes en main.
 

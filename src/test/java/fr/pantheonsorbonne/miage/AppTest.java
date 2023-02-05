@@ -121,8 +121,8 @@ class AppTest {
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
 
-        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
-        ArrayList<Card> handToTest = new ArrayList<>();
+        SortedMap<String, List<Card>> toTest = new TreeMap<>();
+        List<Card> handToTest = new ArrayList<>();
         handToTest.add(new Card(CardColor.SPADE, CardValue.FIVE));
         toTest.put("P1", handToTest);
         test1.playerCards = toTest;
@@ -135,7 +135,7 @@ class AppTest {
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
 
-        HashMap<Integer, Integer> toTest = new HashMap<>();
+        NavigableMap<Integer, Integer> toTest = new TreeMap<>();
         toTest.put(2, 2);
         toTest.put(3, 2);
         boolean result = !test1.firstTurnExpertSystem(toTest).isEmpty();
@@ -313,8 +313,8 @@ class AppTest {
     void addOrdrePlayerWinIfNotAdd() {
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
-        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
-        ArrayList<Card> handToTest = new ArrayList<>();
+        SortedMap<String, List<Card>> toTest = new TreeMap<>();
+        List<Card> handToTest = new ArrayList<>();
         handToTest.add(new Card(CardColor.SPADE, CardValue.FIVE));
         handToTest.add(new Card(CardColor.DIAMOND, CardValue.FIVE));
         handToTest.add(new Card(CardColor.CLUB, CardValue.FIVE));
@@ -339,8 +339,8 @@ class AppTest {
     void shouldContainP1() {
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
-        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
-        ArrayList<Card> handToTest = new ArrayList<>();
+        SortedMap<String, List<Card>> toTest = new TreeMap<>();
+        List<Card> handToTest = new ArrayList<>();
         toTest.put("P1", handToTest);
         test1.playerCards = toTest;
 
@@ -490,8 +490,8 @@ class AppTest {
     void addOrderPlayerWin() {
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
-        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
-        ArrayList<Card> handToTest = new ArrayList<>();
+        SortedMap<String, List<Card>> toTest = new TreeMap<>();
+        List<Card> handToTest = new ArrayList<>();
         toTest.put("P1", handToTest);
         test1.playerCards = toTest;
 
@@ -512,8 +512,8 @@ class AppTest {
     void shouldntContainP1() {
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
-        HashMap<String, ArrayList<Card>> toTest = new HashMap<>();
-        ArrayList<Card> handToTest = new ArrayList<>();
+        SortedMap<String, List<Card>> toTest = new TreeMap<>();
+        List<Card> handToTest = new ArrayList<>();
         handToTest.add(new Card(CardColor.SPADE, CardValue.FIVE));
         handToTest.add(new Card(CardColor.DIAMOND, CardValue.FIVE));
         handToTest.add(new Card(CardColor.CLUB, CardValue.FIVE));
@@ -563,7 +563,7 @@ class AppTest {
         ArrayList<Card> winnerHand = new ArrayList<>();
         ArrayList<Card> toTest= new ArrayList<>();
 
-        ArrayList<Card> teste;
+        List<Card> teste;
         teste = test1.getCardOrGameOver(winnerHand, namePlayer);
         assertEquals(teste, toTest);
     }

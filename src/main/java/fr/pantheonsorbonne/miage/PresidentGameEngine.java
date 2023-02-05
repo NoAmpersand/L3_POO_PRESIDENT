@@ -59,13 +59,13 @@ public abstract class PresidentGameEngine {
         while (players.size() > 1) {
             players = playRound(players, ordrePlayersWin, playersOrdreBase);
         }
-
+    //you don't support a 3 player game!
         String president = ordrePlayersWin.poll();
         String vicePresident = ordrePlayersWin.poll();
         String viceTrouDuCul = ordrePlayersWin.poll();
         String trouDuCul = ordrePlayersWin.poll();
 
-        ArrayList<String> roles = new ArrayList<>();
+        List<String> roles = new ArrayList<>();
         roles.add(president);
         roles.add(vicePresident);
         roles.add(viceTrouDuCul);
@@ -93,7 +93,7 @@ public abstract class PresidentGameEngine {
 
 
 
-    void endTurnFiller(HashMap<String, Boolean> endTurn, Queue<String> players) {
+    void endTurnFiller(Map<String, Boolean> endTurn, Queue<String> players) {
         for (String player : players) {
             endTurn.put(player, false);
         }
@@ -138,7 +138,7 @@ public abstract class PresidentGameEngine {
 
     protected Queue<String> updateQueueForNextRound(Queue<String> ordrePlayerBase, Queue<String> players,
             Queue<String> ordrePlayersWin, String winnerTemp, boolean casPlayCardValTwo) {
-        HashMap<Integer, Integer> winnerHandTestEmpty = getPlayerMapCard(winnerTemp);
+        Map<Integer, Integer> winnerHandTestEmpty = getPlayerMapCard(winnerTemp);
         Queue<String> newPlayers = new LinkedList<>();
         if (!winnerHandTestEmpty.isEmpty() || casPlayCardValTwo) {
             organiserOrdrePlayerBaseEnFonctionNextPlay(winnerTemp, ordrePlayerBase);
@@ -154,7 +154,7 @@ public abstract class PresidentGameEngine {
     }
 
     protected void addOrdrePlayerWin(String namePlayer, Queue<String> players, Queue<String> ordrePlayersWin) {
-        HashMap<Integer, Integer> playerHandTestEmpty = getPlayerMapCard(namePlayer);
+        Map<Integer, Integer> playerHandTestEmpty = getPlayerMapCard(namePlayer);
         if (!playerHandTestEmpty.isEmpty()) {
             players.offer(namePlayer);
         } else {
@@ -165,7 +165,7 @@ public abstract class PresidentGameEngine {
     }
 
     protected boolean addOrdrePlayerWinIfNotAdd(String winnerTemp, Queue<String> ordrePlayersWin, boolean allEndTurn) {
-        HashMap<Integer, Integer> playerHandWinner = getPlayerMapCard(winnerTemp);
+        Map<Integer, Integer> playerHandWinner = getPlayerMapCard(winnerTemp);
         if (playerHandWinner.isEmpty() && !ordrePlayersWin.contains(winnerTemp)) {
             ordrePlayersWin.add(winnerTemp);
             allEndTurn = true;
@@ -175,11 +175,11 @@ public abstract class PresidentGameEngine {
 
     protected Queue<String> playRound(Queue<String> players, Queue<String> ordrePlayersWin,
             Queue<String> ordrePlayerBase) {
-        HashMap<String, Boolean> endTurn = new HashMap<>();
+        Map<String, Boolean> endTurn = new HashMap<>();
         endTurnFiller(endTurn, players);
         boolean allEndTurn = false;
         boolean casPlayCardValTwo = false;
-        ArrayList<Card> winnerHand = new ArrayList<>();
+        List<Card> winnerHand = new ArrayList<>();
         String winnerTemp = "";
         String namePlayer;
         while (!allEndTurn) {
@@ -188,10 +188,10 @@ public abstract class PresidentGameEngine {
             if (winnerTemp.equals(namePlayer)) {
                 break;
             }
-            ArrayList<Card> playerCards = getCardOrGameOver(winnerHand, namePlayer);
+            List<Card> playerCards = getCardOrGameOver(winnerHand, namePlayer);
             if (playerCards.isEmpty()) {
                 endTurn.put(namePlayer, true);
-            } else if (playerCards.get(0).valueToInt() == 14) {
+            } else if (playerCards.get(0).valueToInt() == 14) { //you need a constant here
                 winnerHand = playerCards;
                 winnerTemp = namePlayer;
                 allEndTurn = true;
@@ -212,7 +212,7 @@ public abstract class PresidentGameEngine {
         if (players.size() == 1 && ordrePlayersWin.size() == 3) {
             ordrePlayersWin.add(players.poll());
         }
-        if (ordrePlayersWin.size() == 4) {
+        if (ordrePlayersWin.size() == 4) { //ho ho, that's hard coded player number
             return new LinkedList<>();
         }
         return updateQueueForNextRound(ordrePlayerBase, players, ordrePlayersWin, winnerTemp, casPlayCardValTwo);
@@ -225,7 +225,7 @@ public abstract class PresidentGameEngine {
      */
     protected abstract void declareWinner(String winner);
 
-    protected abstract ArrayList<Card> getCardOrGameOver(ArrayList<Card> winnerHand, String namePlayer);
+    protected abstract List<Card> getCardOrGameOver(List<Card> winnerHand, String namePlayer);
 
     /**
      * give some card to a player
@@ -235,5 +235,5 @@ public abstract class PresidentGameEngine {
      */
     protected abstract void giveCardsToPlayer(Collection<Card> cards, String playerName);
 
-    protected abstract HashMap<Integer, Integer> getPlayerMapCard(String playerName);
+    protected abstract Map<Integer, Integer> getPlayerMapCard(String playerName);
 }
